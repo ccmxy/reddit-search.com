@@ -77,7 +77,7 @@ $(document).ready(function() {
     function getQuickResults(username, subreddit, searchterms, after) {
 
         if (searchterms && !subreddit && !username) {
-            url = 'https://www.reddit.com/comments.json';
+            url = 'https://www.reddit.com/r/all/comments.json';
         }
 
         if (subreddit && !username) {
@@ -87,7 +87,7 @@ $(document).ready(function() {
             url = 'https://www.reddit.com/user/' + username + '/comments.json';
         }
 
-        if (after != (null || -1)) {
+        if (after != null && after != -1) {
             url += "?after=" + after;
         }
 
@@ -112,7 +112,6 @@ $(document).ready(function() {
 
 
         if (after != -1) {
-            console.log(url + '\n');
             currentRequest = $.ajax({
                 url: url,
                 dataType: "json",
@@ -127,14 +126,11 @@ $(document).ready(function() {
                         var nextAfter;
                         if (comments[24]) {
                             nextAfter = comments[24].data.name;
-
                         } else {
                             nextAfter = -1;
                             $("#query_status_msg").html("<b> Query complete.</b>");
 
                         }
-
-                        console.log("Next after: " + nextAfter);
                         showQuickResults(comments, searchterms, username, subreddit, nextAfter);
                         getQuickResults(username, subreddit, searchterms, nextAfter);
 
