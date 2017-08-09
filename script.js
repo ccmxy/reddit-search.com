@@ -114,8 +114,8 @@ $(document).ready(function() {
             queryStatement += ".";
 
             $('.search_results_section').html("");
-            $('.search_results_section').append("<input type='checkbox' id='fold'>Fold results<br>");
             $('.search_results_section').append(queryStatement + " Results found: <b> <span id='res_number'> 0 </span></b><br>");
+            $('.search_results_section').append("<input type='checkbox' id='single_page_checkbox'>Single page results<br><br>");
             $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
 
 
@@ -126,7 +126,6 @@ $(document).ready(function() {
             currentRequest = $.ajax({
                 url: url,
                 dataType: "json",
-                "crossDomain": true,
                 success: function(commentResponse) {
 
                     if (commentResponse.length == 0 && after == null) {
@@ -140,13 +139,20 @@ $(document).ready(function() {
                         } else {
                             nextAfter = -1;
                             $("#query_status_msg").html("<b> Query complete.</b>");
+                            if ($("#1").length == 0) {
+                                $('.search_results_section').append(getNoMatchMessege(searchterms, username, subreddit));
 
+                            }
                         }
                         showQuickResults(comments, searchterms, username, subreddit, nextAfter);
                         getQuickResults(username, subreddit, searchterms, nextAfter);
 
                     }
 
+                },
+                error: function() {
+                    $('.search_results_section').html("");
+                    $('.search_results_section').append(getNoMatchMessege(searchterms, username, subreddit));
                 }
 
             });
@@ -173,7 +179,10 @@ $(document).ready(function() {
                 if (searchterms) {
                     body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                 }
-                var page_number = Math.round((match_ct / 5)) + 1;
+                var page_number = Math.ceil((match_ct / 5));
+                if (page_number === 0) {
+                    page_number = 1;
+                }
                 $('.search_results_section').append("<span class='page page_" + page_number + "'<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
                 addPageNumber(page_number);
             }
@@ -185,40 +194,38 @@ $(document).ready(function() {
 
 
 
+$(document).on('click', '#single_page_checkbox', function() {
+    if (this.checked) {
+        $('#page_markers_section').addClass('hidden');
+        $('.page').removeClass('hidden');
 
-$(document).on('click', '#fold', function() {
-    if(this.checked) {
+
+    } else {
         $('#page_markers_section').removeClass('hidden');
         turnPage(1);
-}
-    else{
-       $('#page_markers_section').addClass('hidden');
-       $('.page').removeClass('hidden');
-
     }
 });
 
 
-function addPageNumber(page_number){
-     if($("#" + page_number).length == 0) {
+function addPageNumber(page_number) {
+    if ($("#" + page_number).length == 0) {
         $('.page_markers_section').append(" <a class='page_marker' id='" + page_number + "' onclick='turnPage(" + page_number + ")'>" + page_number + "</a> ");
     }
-    if(page_number === 1){
-      $('#' + page_number).addClass('bold');
+    if (page_number === 1) {
+        $('#' + page_number).addClass('bold');
 
-    }
-    else {
+    } else {
         $('.page_' + page_number).addClass('hidden');
     }
 }
 
-        function turnPage(id){
-         $('.page_marker').removeClass('bold');
-         $('.page').addClass('hidden');
-        $('.page_' + id).removeClass('hidden');
-          $('#' + id).addClass('bold');
+function turnPage(id) {
+    $('.page_marker').removeClass('bold');
+    $('.page').addClass('hidden');
+    $('.page_' + id).removeClass('hidden');
+    $('#' + id).addClass('bold');
 
-    }
+}
 
 function clean(string) {
     var ret = string.replace(/&gt;/g, '>');
@@ -237,15 +244,15 @@ function contains(string, search) {
     }
 };
 
-function sanitize(string){
-   string = string.replace(/'/g, '&#39;');
-   string = string.replace(/"/g, '&quot;');
+function sanitize(string) {
+    string = string.replace(/'/g, '&#39;');
+    string = string.replace(/"/g, '&quot;');
     return string;
 }
 
 
 function escapeRegExp(text) {
-  return text.replace(/[-[\]'{}()*+?.,\\^$|#\s]/g, '\\$&');
+    return text.replace(/[-[\]'{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
 String.prototype.replaceAll = function(search, replacement) {
