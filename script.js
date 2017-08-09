@@ -105,7 +105,7 @@ $(document).ready(function() {
             queryStatement += ".";
 
             $('.search_results_section').html("");
-            $('.search_results_section').append(queryStatement + " Results found: <b> <span id='res_number'> 0 </span></b> <br><br> <b><span id='query_status_msg'><font color='red'> Hang tight, still looking for more results... </font></span></b><br><br></div>");
+            $('.search_results_section').append(queryStatement + " Results found: <b> <span id='res_number'> 0 </span></b> <br><br> <b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
 
 
         }
@@ -161,7 +161,7 @@ $(document).ready(function() {
                 if (searchterms) {
                     body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                 }
-                $('.search_results_section').append("<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + title + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div>");
+                $('.search_results_section').append("<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + title + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
             }
 
         }
