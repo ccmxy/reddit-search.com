@@ -202,7 +202,7 @@ $(document).on('click', '#single_page_checkbox', function() {
 
 
     } else {
-        $('#page_markers_section').removeClass('hidden');
+        $('.page_markers_section').removeClass('hidden');
         turnPage(1);
     }
 });
