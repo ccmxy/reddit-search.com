@@ -38,6 +38,7 @@ $(document).ready(function() {
 
         $('.wrapper').addClass('hidden');
         $('#searched_results_display').removeClass('hidden');
+        $('#checkbox_section').removeClass('hidden');
         getQuickResults(username, subreddit, searchterms, null);
 
     }
@@ -57,6 +58,8 @@ $(document).ready(function() {
                 if (currentRequest != null) {
                     currentRequest.abort();
                 }
+
+                $('#checkbox_section').removeClass('hidden');
                 getQuickResults(user, subreddit, search_terms, null);
             }
         }
@@ -115,7 +118,6 @@ $(document).ready(function() {
 
             $('.search_results_section').html("");
             $('.search_results_section').append(queryStatement + " Results found: <b> <span id='res_number'> 0 </span></b><br>");
-            // $('.checkbox').append("<input type='checkbox' id='single_page_checkbox'>Single page results<br><br>");
             $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
 
 
@@ -146,7 +148,6 @@ $(document).ready(function() {
                         }
                         showQuickResults(comments, searchterms, username, subreddit, nextAfter);
                         getQuickResults(username, subreddit, searchterms, nextAfter);
-
                     }
 
                 },
@@ -222,6 +223,7 @@ function addPageNumber(page_number) {
 
     if($('input[name="single_page_checkbox"]').is(':checked')){
         $('.page').removeClass('hidden');
+        $('.page_markers_section').addClass('hidden');
     }
 
 }
@@ -289,6 +291,7 @@ function getNoMatchMessege(searchterms, username, subreddit) {
         delete subreddit;
     }
     $('.search_results_section').html("");
+    $('#checkbox_section').addClass('hidden');
     var noMatchMsg = "<div class='error'><div>Your search for comments";
     if (username) {
         noMatchMsg += " by user <b><a href='https://www.reddit.com/u/" + username + "'>/u/" + username + " </a></b>";
