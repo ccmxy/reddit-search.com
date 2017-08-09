@@ -115,7 +115,7 @@ $(document).ready(function() {
 
             $('.search_results_section').html("");
             $('.search_results_section').append(queryStatement + " Results found: <b> <span id='res_number'> 0 </span></b><br>");
-            $('.search_results_section').append("<input type='checkbox' id='single_page_checkbox'>Single page results<br><br>");
+            // $('.checkbox').append("<input type='checkbox' id='single_page_checkbox'>Single page results<br><br>");
             $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
 
 
@@ -207,6 +207,8 @@ $(document).on('click', '#single_page_checkbox', function() {
 });
 
 
+
+
 function addPageNumber(page_number) {
     if ($("#" + page_number).length == 0) {
         $('.page_markers_section').append(" <a class='page_marker' id='" + page_number + "' onclick='turnPage(" + page_number + ")'>" + page_number + "</a> ");
@@ -217,6 +219,11 @@ function addPageNumber(page_number) {
     } else {
         $('.page_' + page_number).addClass('hidden');
     }
+
+    if($('input[name="single_page_checkbox"]').is(':checked')){
+        $('.page').removeClass('hidden');
+    }
+
 }
 
 function turnPage(id) {
