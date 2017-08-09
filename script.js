@@ -1,6 +1,14 @@
 $(document).ready(function() {
 
+
+
     var currentRequest = null;
+
+    $("#about").attr('title', 'All three search boxes can be used alone or in combo with the other two. \n\nHover over search boxes for usage details.');
+    $("#user").attr('title', 'OPTIONAL: Only pull comments from specific user. Will grab user\'s most recent 1000 comments.\n\nAll three search boxes can be used alone or in combination.');
+    $("#search_terms").attr('title', 'OPTIONAL: Only pull comments containing this word or phrase. If this is the only box specified it will search from most recent 1000 comments in r/all.\n\nAll three search boxes can be used alone or in combination.');
+    $("#subreddit").attr('title', 'OPTIONAL: Only pull comments from this subreddit. If user is not specified, it will pull the most recent 1000 comments from that subreddit.\n\nnAll three search boxes can be used alone or in combination.');
+
 
     function checkInput() {
         if ($('#search_terms').val() == "" && $('#subreddit').val() == "" && $('#user').val() == "") {
