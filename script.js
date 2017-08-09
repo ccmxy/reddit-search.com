@@ -114,7 +114,9 @@ $(document).ready(function() {
             queryStatement += ".";
 
             $('.search_results_section').html("");
-            $('.search_results_section').append(queryStatement + " Results found: <b> <span id='res_number'> 0 </span></b> <br><br> <b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
+            $('.search_results_section').append("<input type='checkbox' id='fold'>Fold results<br>");
+            $('.search_results_section').append(queryStatement + " Results found: <b> <span id='res_number'> 0 </span></b><br>");
+            $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
 
 
         }
@@ -171,7 +173,6 @@ $(document).ready(function() {
                 if (searchterms) {
                     body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                 }
-               // $('.search_results_section').append("<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
                 var page_number = Math.round((match_ct / 5)) + 1;
                 $('.search_results_section').append("<span class='page page_" + page_number + "'<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
                 addPageNumber(page_number);
@@ -181,6 +182,22 @@ $(document).ready(function() {
     }
 
 });
+
+
+
+
+$(document).on('click', '#fold', function() {
+    if(this.checked) {
+        $('#page_markers_section').removeClass('hidden');
+        turnPage(1);
+}
+    else{
+       $('#page_markers_section').addClass('hidden');
+       $('.page').removeClass('hidden');
+
+    }
+});
+
 
 function addPageNumber(page_number){
      if($("#" + page_number).length == 0) {
