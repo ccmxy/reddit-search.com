@@ -9,6 +9,10 @@ body {
 .removed {
     background-color: red;
 }
+.bold{
+    color: black;
+    font-weight: bold;
+}
 .wrapper {
     height: 100%;
     width: 100%;

@@ -52,6 +52,7 @@ $(document).ready(function() {
             var subreddit = getStringBetween(fullSearchString, "subreddit=", '::');
             var search_terms = getStringBetween(fullSearchString, 'search=', '::');
             $('.search_results_section').html("");
+            $('.page_markers_section').html("");
             if (checkInput()) {
                 if (currentRequest != null) {
                     currentRequest.abort();
@@ -165,17 +166,42 @@ $(document).ready(function() {
             if (contains(body.toLowerCase(), searchterms.toLowerCase())) {
                 match_ct = parseInt(document.getElementById("res_number").innerHTML) + 1;
                 $('#res_number').html(match_ct);
+
                 var permalink = comments[j].data.link_permalink + comments[j].data.id;
                 if (searchterms) {
                     body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                 }
-                $('.search_results_section').append("<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
+               // $('.search_results_section').append("<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
+                var page_number = Math.round((match_ct / 5)) + 1;
+                $('.search_results_section').append("<span class='page page_" + page_number + "'<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
+                addPageNumber(page_number);
             }
 
         }
     }
 
 });
+
+function addPageNumber(page_number){
+     if($("#" + page_number).length == 0) {
+        $('.page_markers_section').append(" <a class='page_marker' id='" + page_number + "' onclick='turnPage(" + page_number + ")'>" + page_number + "</a> ");
+    }
+    if(page_number === 1){
+      $('#' + page_number).addClass('bold');
+
+    }
+    else {
+        $('.page_' + page_number).addClass('hidden');
+    }
+}
+
+        function turnPage(id){
+         $('.page_marker').removeClass('bold');
+         $('.page').addClass('hidden');
+        $('.page_' + id).removeClass('hidden');
+          $('#' + id).addClass('bold');
+
+    }
 
 function clean(string) {
     var ret = string.replace(/&gt;/g, '>');
