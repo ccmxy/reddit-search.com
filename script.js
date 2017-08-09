@@ -153,7 +153,7 @@ $(document).ready(function() {
                     continue;
                 }
             }
-            if (contains(body, searchterms)) {
+            if (contains(body.toLowerCase(), searchterms.toLowerCase())) {
                 match_ct = parseInt(document.getElementById("res_number").innerHTML) + 1;
                 $('#res_number').html(match_ct);
                 var title = comments[j].data.link_permalink;
