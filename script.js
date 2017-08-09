@@ -20,14 +20,13 @@ $(document).ready(function() {
 
 
     function search() {
-        var username, searchterms, subreddit = "";
-        $('#after_search').val($('#after_search').val() + " user=" + $('#user').val() + "::")
-        $('#after_search').val($('#after_search').val() + " search=" + $('#search_terms').val() + "::")
-        $('#after_search').val($('#after_search').val() + " subreddit=" + $('#subreddit').val() + "::")
+        var username = $('#user').val();
+        var searchterms = $('#search_terms').val();
+        var subreddit = $('#subreddit').val();
 
-        username = $('#user').val();
-        searchterms = $('#search_terms').val();
-        subreddit = $('#subreddit').val();
+        $('#after_search').val($('#after_search').val() + " user=" + username + "::")
+        $('#after_search').val($('#after_search').val() + " search=" + searchterms + "::")
+        $('#after_search').val($('#after_search').val() + " subreddit=" + subreddit + "::")
 
         $('.wrapper').addClass('hidden');
         $('#searched_results_display').removeClass('hidden');
@@ -75,8 +74,9 @@ $(document).ready(function() {
 
 
     function getQuickResults(username, subreddit, searchterms, after) {
+        subreddit = subreddit.split("r/").pop();
 
-        if (searchterms && !subreddit && !username) {
+        if (!subreddit && !username) {
             url = 'https://www.reddit.com/r/all/comments.json';
         }
 
@@ -153,15 +153,15 @@ $(document).ready(function() {
                     continue;
                 }
             }
+            searchterms = sanitize(searchterms);
             if (contains(body.toLowerCase(), searchterms.toLowerCase())) {
                 match_ct = parseInt(document.getElementById("res_number").innerHTML) + 1;
                 $('#res_number').html(match_ct);
-                var title = comments[j].data.link_permalink;
-                var permalink = title;
+                var permalink = comments[j].data.link_permalink + comments[j].data.id;
                 if (searchterms) {
                     body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                 }
-                $('.search_results_section').append("<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + title + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
+                $('.search_results_section').append("<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
             }
 
         }
@@ -173,7 +173,6 @@ function clean(string) {
     var ret = string.replace(/&gt;/g, '>');
     ret = ret.replace(/&lt;/g, '<');
     ret = ret.replace(/&quot;/g, '"');
-    ret = ret.replace(/&apos;/g, "'");
     ret = ret.replace(/&amp;/g, '&');
     return ret;
 }
@@ -186,6 +185,17 @@ function contains(string, search) {
         return false;
     }
 };
+
+function sanitize(string){
+   string = string.replace(/'/g, '&#39;');
+   string = string.replace(/"/g, '&quot;');
+    return string;
+}
+
+
+function escapeRegExp(text) {
+  return text.replace(/[-[\]'{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
@@ -227,7 +237,7 @@ function getNoMatchMessege(searchterms, username, subreddit) {
 
     noMatchMsg += " did not return any matches. <br> <div>Possible issues:</div> <br> <ul>";
     noMatchMsg += "<li>If you're searching from this page, remember that options are search=, user= and subreddit=. </li> <li>Make sure that all queiries end in '::'. For example, user=spez::</li>";
-    noMatchMsg += "<li>If you used quotes around any values, those quotes are not escaped, so only search entries containing those quotes will be searched.</li>";
+    noMatchMsg += "<li>Do not use quotes unless you actually want to search for quotes.</li>";
     noMatchMsg += "li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li></ul></div>";
 
     return noMatchMsg;
