@@ -232,7 +232,7 @@ $(document).on('click', '#single_page_checkbox', function() {
         $('#page_markers_section').addClass('hidden');
         $('.page').removeClass('hidden');
 
-    } 
+    }
     else {
         $('.page_markers_section').removeClass('hidden');
         turnPage(1);
@@ -287,11 +287,6 @@ function sanitize(string) {
     string = string.replace(/'/g, '&#39;');
     string = string.replace(/"/g, '&quot;');
     return string;
-}
-
-
-function escapeRegExp(text) {
-    return text.replace(/[-[\]'{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
 String.prototype.replaceAll = function(search, replacement) {
