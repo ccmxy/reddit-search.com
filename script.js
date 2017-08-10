@@ -254,7 +254,7 @@ function addPageNumber(page_number) {
  
         $('.next').removeClass('disabled');
 
-        $('.pagination').append("<li id='" + page_number + "' class='page_marker' onclick='turnPage(" + page_number + ")'>" + page_number + " </li>");
+        $('.pagination').append("<li id='" + page_number + "' class='page_marker'> </li>");
 
 
     }
