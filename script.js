@@ -62,7 +62,6 @@ $(document).ready(function() {
 
             $('.search_results_section').html("");
 
-            $('.page_markers_section').html("");
             $('#my_bootstrap_pager').addClass('hidden');
              $('#current_page').html("Page 0");
             $('#current_length').html("0");
@@ -92,7 +91,7 @@ $(document).ready(function() {
 
 
         $('.search_results_section').html("");
-        $('#myList').html("");
+        $('.pagination').html("");
 
         if (checkInput()) {
             if (currentRequest != null) {
@@ -227,7 +226,7 @@ $(document).ready(function() {
                 if (searchterms) {
                     body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                 }
-                var page_number = Math.ceil((match_ct / 10));
+                var page_number = Math.ceil((match_ct / 70));
                 $('.search_results_section').append("<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>");
 
                 addPageNumber(page_number);
