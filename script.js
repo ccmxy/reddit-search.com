@@ -195,13 +195,8 @@ $(document).ready(function() {
             });
 
 
-        } else {
-            $('.pagination').append("<li class='next page-item' onclick='nextPage()' id='next'><a class='page-link' href='#' aria-label='Next'><span aria-hidden='true'>Next &raquo;</span> <span class='sr-only'>Next</span></a></li>");
-
-            if ($('.page').length === 0) {
+        } else if ($('.page').length === 0){
                 $('.search_results_section').append(getNoMatchMessege(searchterms, username, subreddit));
-            }
-
         }
 
 
@@ -226,7 +221,7 @@ $(document).ready(function() {
                 if (searchterms) {
                     body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                 }
-                var page_number = Math.ceil((match_ct / 70));
+                var page_number = Math.ceil((match_ct / 80));
                 $('.search_results_section').append("<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>");
 
                 addPageNumber(page_number);
@@ -256,12 +251,10 @@ $(document).on('click', '#single_page_checkbox', function() {
 
 function addPageNumber(page_number) {
     if ($("#" + page_number).length == 0) {
-        if (page_number == 1) {
-            $('.pagination').append("<li class='previous page-item disabled' id='prev'  onclick='prevPage()' ><a class='page-link' href='#' aria-label='Previous' tabindex='-1'><span aria-hidden='true'>&laquo; Previous</span><span class='sr-only'> Prev </span></a></li>");
-        }
+ 
         $('.next').removeClass('disabled');
 
-        $('.pagination').append("<li class='page-item' id='" + page_number + "'><a class='page-link page_marker' id='" + page_number + "' onclick='turnPage(" + page_number + ")'>" + page_number + "</a> </li>");
+        $('.pagination').append("<li id='" + page_number + "'><a class='page_marker' onclick='turnPage(" + page_number + ")'>" + page_number + "</a> </li>");
 
 
     }
