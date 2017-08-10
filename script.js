@@ -1,14 +1,11 @@
 $(document).ready(function() {
 
-
-
     var currentRequest = null;
 
     $("#about").attr('title', 'All three search boxes can be used alone or in combo with the other two. \n\nHover over search boxes for usage details.');
     $("#user").attr('title', 'OPTIONAL: Only pull comments from specific user. Will grab user\'s most recent 1000 comments.\n\nAll three search boxes can be used alone or in combination.');
     $("#search_terms").attr('title', 'OPTIONAL: Only pull comments containing this word or phrase. If this is the only box specified it will search from most recent 1000 comments in r/all.\n\nAll three search boxes can be used alone or in combination.');
     $("#subreddit").attr('title', 'OPTIONAL: Only pull comments from this subreddit. If user is not specified, it will pull the most recent 1000 comments from that subreddit.\n\nnAll three search boxes can be used alone or in combination.');
-
 
     function checkInput() {
         if ($('#search_terms').val() == "" && $('#subreddit').val() == "" && $('#user').val() == "") {
@@ -109,15 +106,15 @@ $(document).ready(function() {
                 queryStatement += " containing <b>" + searchterms + "</b>";
             }
             if (username) {
-                queryStatement += " by <a href='https://www.reddit.com/u/" + username + "'>u/" + username + "</a>";
+                queryStatement += " by <a href='https://www.reddit.com/u/" + username + "' target='_blank'>u/" + username + "</a>";
             }
             if (subreddit) {
-                queryStatement += " in <a href='https://www.reddit.com/r/" + subreddit + "'>r/" + subreddit + "</a>";
+                queryStatement += " in <a href='https://www.reddit.com/r/" + subreddit + "' target='_blank'>r/" + subreddit + "</a>";
             }
             queryStatement += ".";
 
             $('.search_results_section').html("");
-            $('.search_results_section').append(queryStatement + " Results found: <b> <span id='res_number'> 0 </span></b><br>");
+            $('.search_results_section').append(queryStatement + "<br>Results found: <b> <span id='res_number'> 0 </span></b><br>");
             $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
 
 
@@ -184,7 +181,7 @@ $(document).ready(function() {
                 if (page_number === 0) {
                     page_number = 1;
                 }
-                $('.search_results_section').append("<span class='page page_" + page_number + "'<div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "<hr></div>");
+                $('.search_results_section').append("<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>");
                 addPageNumber(page_number);
             }
 
@@ -295,13 +292,13 @@ function getNoMatchMessege(searchterms, username, subreddit) {
     $('#checkbox_section').addClass('hidden');
     var noMatchMsg = "<div class='error'><div>Your search for comments";
     if (username) {
-        noMatchMsg += " by user <b><a href='https://www.reddit.com/u/" + username + "'>/u/" + username + " </a></b>";
+        noMatchMsg += " by user <b><a href='https://www.reddit.com/u/" + username + "' target='_blank'>/u/" + username + " </a></b>";
     }
     if (searchterms) {
         noMatchMsg += " containing <b>" + searchterms + "</b>";
     }
     if (subreddit) {
-        noMatchMsg += " in <b><a href='https://www.reddit.com/r/" + subreddit + "'>r/" + subreddit + "</a></b>";
+        noMatchMsg += " in <b><a href='https://www.reddit.com/r/" + subreddit + "' target='_blank'>r/" + subreddit + "</a></b>";
     }
 
     noMatchMsg += " did not return any matches. <br> <div>Possible issues:</div> <br> <ul>";
