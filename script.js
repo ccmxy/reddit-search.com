@@ -192,6 +192,7 @@ $(document).ready(function() {
                 error: function() {
                     $('.search_results_section').html("");
                     $('.search_results_section').append(getNoMatchMessege(searchterms, username, subreddit));
+                    $('#checkbox_section').addClass('hidden');
                 }
 
             });
