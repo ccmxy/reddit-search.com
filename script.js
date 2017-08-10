@@ -109,8 +109,6 @@ $(document).ready(function() {
 
     //When the user starts typing in..
     $(document).keyup(function(e) {
-       // $('#my_bootstrap_pager').addClass('hidden');
-   
         if ((e.which == 13) && $('#searched_results_display').hasClass('hidden')) { //if enter pressed and on front page
             $('#search').click();
         } else {
@@ -244,17 +242,13 @@ $(document).ready(function() {
 
 $(document).on('click', '#single_page_checkbox', function() {
     if (this.checked) {
-        $('.page_markers_section').addClass('hidden');
         $('#my_bootstrap_pager').addClass('hidden');
 
         $('.page').removeClass('hidden');
 
     } else {
         if($('.page_marker').length > 1){
-        $('.page_markers_section').removeClass('hidden');
         $('#my_bootstrap_pager').removeClass('hidden');
-
-        turnPage(1);
     }
     }
 });
@@ -278,13 +272,11 @@ function addPageNumber(page_number) {
          $('#current_page').html(page_number);
 
 
-        $('.page_markers_section').addClass('hidden');
         $('#' + page_number).addClass('active');
 
     } else {
 
         $('.page_' + page_number).addClass('hidden');
-        $('.page_markers_section').removeClass('hidden');
         $('#my_bootstrap_pager').removeClass('hidden');
 
     }
@@ -292,7 +284,6 @@ function addPageNumber(page_number) {
     if ($('input[name="single_page_checkbox"]').is(':checked')) {
 
         $('.page').removeClass('hidden');
-        $('.page_markers_section').addClass('hidden');
         $('#my_bootstrap_pager').addClass('hidden');
 
     }
