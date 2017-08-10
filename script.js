@@ -229,7 +229,7 @@ $(document).ready(function() {
                 if (searchterms) {
                     body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                 }
-                var page_number = Math.ceil((match_ct / 20));
+                var page_number = Math.ceil((match_ct / 10));
                 $('.search_results_section').append("<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>");
 
                 addPageNumber(page_number);
@@ -250,10 +250,12 @@ $(document).on('click', '#single_page_checkbox', function() {
         $('.page').removeClass('hidden');
 
     } else {
+        if($('.page_marker').length > 1){
         $('.page_markers_section').removeClass('hidden');
         $('#my_bootstrap_pager').removeClass('hidden');
 
         turnPage(1);
+    }
     }
 });
 
@@ -388,6 +390,8 @@ function getNoMatchMessege(searchterms, username, subreddit) {
         delete subreddit;
     }
     $('.search_results_section').html("");
+    $('.my_bootstrap_pager').addClass('hidden');
+
     $('#checkbox_section').addClass('hidden');
 
     var noMatchMsg = "<div class='error'><div>Your search for comments";
