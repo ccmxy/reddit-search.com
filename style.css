@@ -31,7 +31,7 @@ body {
     align-self: flex-start;
 }
 .loading {
-    font-size: 18px;
+    font-size: 15px;
 }
 .loading:after {
     overflow: hidden;
@@ -140,6 +140,7 @@ a.url:visited {
     background-color: #eee;
     border-color: #bfb4b4;
 }
+
 .error {
     font-size: 1.3em;
 }
@@ -189,20 +190,6 @@ a.url:visited {
 
 
 @media only screen and (max-width: 570px) {
-  /*  input#user,
-    input#search_terms,
-    input#subreddit {
-        border-style: outset;
-        border-width: thin;
-        flex: 0 0 auto;
-        margin: -5px 0;
-        border-color: '#EBEBEB';
-        border-bottom-color: rgb(34, 34, 34);
-        border-radius: 0;
-        -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4) font-size: 13px;
-        margin-top: 10%;
-        height: 5%;
-    }*/
     .url {
         font-size: 0.7em;
     }
@@ -251,9 +238,6 @@ a.url:visited {
         display: none !important;
     }
 }
-
-/*Phones */
-
 
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 415px) and (orientation: portrait) {
