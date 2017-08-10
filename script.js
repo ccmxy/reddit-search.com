@@ -187,7 +187,7 @@ $(document).ready(function() {
 
 
         } else {
-            $('.pagination').append("<li class='page-item' onclick='nextPage()' id='next'><a class='page-link' href='#' aria-label='Next'><span aria-hidden='true'>Next &raquo;</span> <span class='sr-only'>Next</span></a></li>");
+            $('.pagination').append("<li class='next page-item' onclick='nextPage()' id='next'><a class='page-link' href='#' aria-label='Next'><span aria-hidden='true'>Next &raquo;</span> <span class='sr-only'>Next</span></a></li>");
 
             if ($('.page').length === 0) {
                 $('.search_results_section').append(getNoMatchMessege(searchterms, username, subreddit));
@@ -247,8 +247,10 @@ $(document).on('click', '#single_page_checkbox', function() {
 function addPageNumber(page_number) {
     if ($("#" + page_number).length == 0) {
         if (page_number == 1) {
-            $('.pagination').append("<li class='page-item disabled' id='prev'  onclick='prevPage()' ><a class='page-link' href='#' aria-label='Previous' tabindex='-1'><span aria-hidden='true'>&laquo; Previous</span><span class='sr-only'> Prev </span></a></li>");
+            $('.pagination').append("<li class='previous page-item disabled' id='prev'  onclick='prevPage()' ><a class='page-link' href='#' aria-label='Previous' tabindex='-1'><span aria-hidden='true'>&laquo; Previous</span><span class='sr-only'> Prev </span></a></li>");
         }
+        $('.next').removeClass('disabled');
+
         $('.pagination').append("<li class='page-item' id='" + page_number + "'><a class='page-link page_marker' id='" + page_number + "' onclick='turnPage(" + page_number + ")'>" + page_number + "</a> </li>");
 
 
@@ -267,6 +269,10 @@ function addPageNumber(page_number) {
         $('.page').removeClass('hidden');
         $('.page_markers_section').addClass('hidden');
     }
+
+
+   $('.current_length').html(page_number);
+
 
 }
 
@@ -290,21 +296,21 @@ function nextPage() {
 function turnPage(id) {
 
     if (id == 1) {
-        $('#prev').addClass('disabled');
+        $('.previous').addClass('disabled');
     } else {
-        $('#prev').removeClass('disabled');
+        $('.previous').removeClass('disabled');
     }
     if (id == ($('.page_marker').length)) {
-        $('#next').addClass('disabled');
+        $('.next').addClass('disabled');
     } else {
-        $('#next').removeClass('disabled');
+        $('.next').removeClass('disabled');
     }
 
     $('li').removeClass('active');
     $('.page').addClass('hidden');
     $('.page_' + id).removeClass('hidden');
     $('#' + id).addClass('active');
-
+    $('#current_page').html("Page " + id);
 }
 
 function clean(string) {
