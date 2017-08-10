@@ -186,8 +186,10 @@ a.url:visited {
         padding-right: 5%;
     }
 }
+
+
 @media only screen and (max-width: 570px) {
-    input#user,
+  /*  input#user,
     input#search_terms,
     input#subreddit {
         border-style: outset;
@@ -200,7 +202,7 @@ a.url:visited {
         -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4) font-size: 13px;
         margin-top: 10%;
         height: 5%;
-    }
+    }*/
     .url {
         font-size: 0.7em;
     }
@@ -252,12 +254,16 @@ a.url:visited {
 
 /*Phones */
 
+
+
 @media only screen and (min-device-width: 320px) and (max-device-width: 415px) and (orientation: portrait) {
+
+
     input#user,
     input#search_terms,
     input#subreddit {
-        margin-top: 10%;
-        height: 5%;
+        margin-top: 5%;
+        height: 10%;
     }
     .comment_body {
         display: flex;
