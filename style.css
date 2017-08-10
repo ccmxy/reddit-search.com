@@ -9,7 +9,7 @@ body {
 .removed {
     background-color: red;
 }
-.bold {
+.bold{
     color: black;
     font-weight: bold;
 }
@@ -19,7 +19,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+ }
 .wrapper h1 {
     display: flex;
     justify-content: center;
@@ -30,34 +30,39 @@ body {
     margin: 5px;
     align-self: flex-start;
 }
+
 .loading {
-    font-size: 30px;
+  font-size: 30px;
 }
+
 .loading:after {
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: bottom;
-    -webkit-animation: ellipsis steps(4, end) 900ms infinite;
-    animation: ellipsis steps(4, end) 900ms infinite;
-    content: "\2026";
-    /* ascii code for the ellipsis character */
-    
-    width: 0px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 900ms infinite;      
+  animation: ellipsis steps(4,end) 900ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
 }
+
 @keyframes ellipsis {
-    to {
-        width: 1.25em;
-    }
+  to {
+    width: 1.25em;    
+  }
 }
+
 @-webkit-keyframes ellipsis {
-    to {
-        width: 1.25em;
-    }
+  to {
+    width: 1.25em;    
+  }
 }
-#about {
-    display: flex;
-    justify-content: center;
+
+
+#about{
+  display:flex;
+  justify-content: center;
     align-self: flex-end;
+
 }
 .logo:hover {
     text-decoration: none;
@@ -81,6 +86,7 @@ body {
     justify-content: space-around;
     padding: 20px;
 }
+
 .hidden {
     display: none;
 }
@@ -172,6 +178,7 @@ section {
 p {
     text-align: center;
 }
+
 /*Media Query*/
 
 @media (min-width: 521px) and (max-width: 720px) {
@@ -217,6 +224,7 @@ p {
         width: 100%;
     }
 }
+
 @media (min-width: 451px) and (max-width: 620px) {
     section,
     url {
@@ -299,9 +307,12 @@ p {
         width: 500px;
     }
 }
-/*iPod 6g query*/
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 640px) {
+
+/*iPod 6g query*/
+@media only screen and (min-device-width : 320px) and (max-device-width : 640px)
+ {
+
     input#user,
     input#search_terms,
     input#subreddit {
@@ -314,4 +325,5 @@ p {
     section {
         padding-left: 20px;
     }
+
 }

@@ -201,7 +201,8 @@ $(document).on('click', '#single_page_checkbox', function() {
         $('.page').removeClass('hidden');
 
 
-    } else {
+    } 
+    else {
         $('.page_markers_section').removeClass('hidden');
         turnPage(1);
     }
