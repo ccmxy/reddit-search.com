@@ -29,9 +29,14 @@ $(document).ready(function() {
         var searchterms = $('#search_terms').val();
         var subreddit = $('#subreddit').val();
 
-        $('#after_search').val($('#after_search').val() + " user=" + username + "::")
-        $('#after_search').val($('#after_search').val() + " search=" + searchterms + "::")
-        $('#after_search').val($('#after_search').val() + " subreddit=" + subreddit + "::")
+        $('#after_search').val($('#after_search').val() + " user=" + username + "::");
+        $('#after_search').val($('#after_search').val() + " search=" + searchterms + "::");
+        $('#after_search').val($('#after_search').val() + " subreddit=" + subreddit + "::");
+
+        $('#user_mobile').val(username);
+        $('#search_mobile').val(searchterms);
+        $('#subreddit_mobile').val(subreddit);
+
 
         $('.wrapper').addClass('hidden');
         $('#searched_results_display').removeClass('hidden');
@@ -46,9 +51,15 @@ $(document).ready(function() {
             alert('No query entered');
         } else {
             var fullSearchString = $('#after_search').val();
-            var user = getStringBetween(fullSearchString, "user=", '::');
+            var username = getStringBetween(fullSearchString, "user=", '::');
             var subreddit = getStringBetween(fullSearchString, "subreddit=", '::');
-            var search_terms = getStringBetween(fullSearchString, 'search=', '::');
+            var searchterms = getStringBetween(fullSearchString, 'search=', '::');
+
+            //In case for some reason we wanted to rapidly switch from desktop to mobile...
+            $('#user_mobile').val(username);
+            $('#search_mobile').val(searchterms);
+            $('#subreddit_mobile').val(subreddit);
+
             $('.search_results_section').html("");
             $('.page_markers_section').html("");
             if (checkInput()) {
@@ -57,26 +68,50 @@ $(document).ready(function() {
                 }
 
                 $('#checkbox_section').removeClass('hidden');
-                getQuickResults(user, subreddit, search_terms, null);
+                getQuickResults(username, subreddit, searchterms, null);
             }
         }
     });
 
 
+    function mobileKeyPress(){
+            var username = $('#user_mobile').val();
+            var searchterms =$('#search_mobile').val();
+            var subreddit =  $('#subreddit_mobile').val();
+
+            //In case for some reason we wanted to rapidly switch from mobile to desktop...
+            $('#after_search').val($('#after_search').val() + " user=" + username + "::");
+            $('#after_search').val($('#after_search').val() + " search=" + searchterms + "::");
+            $('#after_search').val($('#after_search').val() + " subreddit=" + subreddit + "::");
+
+
+            $('.search_results_section').html("");
+            $('.page_markers_section').html("");
+            if (checkInput()) {
+                if (currentRequest != null) {
+                    currentRequest.abort();
+                }
+
+                $('#checkbox_section').removeClass('hidden');
+                getQuickResults(username, subreddit, searchterms, null);
+            }
+    }
+
+
+
 
     //When the user starts typing in..
     $(document).keyup(function(e) {
-        if (e.which == 13) {
-            if ($('#searched_results_display').hasClass('hidden')) {
+        if ((e.which == 13) && $('#searched_results_display').hasClass('hidden')) { //if enter pressed and on front page
                 $('#search').click();
-            } else {
-                $('.after_search_container span').click();
-            }
-
-
         } else {
             if (!($('#searched_results_display').hasClass('hidden'))) {
-                $('.after_search_container span').click();
+                if($('#after_search').is(":visible")){
+                     $('.after_search_container span').click();
+                 }
+                 else {
+                    mobileKeyPress();
+                 }
             }
         }
     });
@@ -197,15 +232,12 @@ $(document).on('click', '#single_page_checkbox', function() {
         $('#page_markers_section').addClass('hidden');
         $('.page').removeClass('hidden');
 
-
     } 
     else {
         $('.page_markers_section').removeClass('hidden');
         turnPage(1);
     }
 });
-
-
 
 
 function addPageNumber(page_number) {
@@ -302,9 +334,9 @@ function getNoMatchMessege(searchterms, username, subreddit) {
     }
 
     noMatchMsg += " did not return any matches. <br> <div>Possible issues:</div> <br> <ul>";
-    noMatchMsg += "<li>If you're searching from this page, remember that options are search=, user= and subreddit=. </li> <li>Make sure that all queiries end in '::'. For example, user=spez::</li>";
     noMatchMsg += "<li>Do not use quotes unless you actually want to search for quotes.</li>";
-    noMatchMsg += "li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li></ul></div>";
+    noMatchMsg += "<li>Non-mobile site: make sure that all queiry options end in '::'. For example, user=spez::</li>";
+    noMatchMsg += "<li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li></ul></div>";
 
     return noMatchMsg;
 }

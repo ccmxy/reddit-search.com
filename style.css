@@ -31,7 +31,7 @@ body {
     align-self: flex-start;
 }
 .loading {
-    font-size: 30px;
+    font-size: 18px;
 }
 .loading:after {
     overflow: hidden;
@@ -41,6 +41,7 @@ body {
     animation: ellipsis steps(4, end) 900ms infinite;
     content: "\2026";
     /* ascii code for the ellipsis character */
+    
     width: 0px;
 }
 @keyframes ellipsis {
@@ -116,7 +117,6 @@ section {
 .short_url a {
     color: #1717de;
 }
-
 a.url:visited {
     color: purple;
 }
@@ -126,7 +126,6 @@ a.url:visited {
 .comment_body {
     width: 90%;
 }
-
 .search_buttons a {
     width: 100px;
 }
@@ -169,61 +168,25 @@ a.url:visited {
 .after_search_container span:hover {
     cursor: pointer;
 }
-/*p {
-    text-align: center;
-}*/
+.mobile {
+    display: none;
+}
+.mobile_instructions {
+    display: none;
+}
+.url {
+    overflow-wrap: break-word;
+}
 /*Media Query*/
 
-@media (min-width: 521px) and (max-width: 720px) {
-    input#user,
-    input#search_terms,
-    input#subreddit {
-        border-style: outset;
-        border-width: thin;
-        flex: 0 0 auto;
-        margin: -5px 0;
-        border-color: '#EBEBEB';
-        border-bottom-color: rgb(34, 34, 34);
-        border-radius: 0;
-        -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4) font-size: 13px;
-    }
-    .url {
-        font-size: 0.7em;
-        overflow-wrap: break-word;
-    }
-    .shelf {
-        display: inline-grid;
-        align-items: center;
-    }
-    .shelf .logo {
-        display: flex;
-        justify-content: center;
-    }
-    input#after_search {
-        width: 300px;
-    }
-    input#user,
-    input#search_terms,
-    input#subreddit {
-        width: 300px;
-    }
-    .comment_body {
-        width: 90%;
-    }
-    #after_search_container {
-        align-items: stretch;
-    }
-    input#after_search {
-        width: 100%;
-    }
-}
-@media (min-width: 451px) and (max-width: 620px) {
+@media (min-width: 451px) {
     section,
     url {
-        padding-left: 10%;
+        padding-left: 5%;
+        padding-right: 5%;
     }
 }
-@media only screen and (max-width: 520px) {
+@media only screen and (max-width: 570px) {
     input#user,
     input#search_terms,
     input#subreddit {
@@ -235,53 +198,39 @@ a.url:visited {
         border-bottom-color: rgb(34, 34, 34);
         border-radius: 0;
         -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4) font-size: 13px;
-    }
-    .url {
-        font-size: 0.7em;
-        overflow-wrap: break-word;
-    }
-    .shelf {
-        display: inline-grid;
-        align-items: center;
-    }
-    .shelf .logo {
-        display: flex;
-        justify-content: center;
-    }
-    input#user,
-    input#search_terms,
-    input#subreddit {
-        width: 250px;
-    }
-    input#after_search {
-        width: 250px;
-    }
-    .comment_body {
-        width: 350px;
-    }
-    section {
-        padding-left: 10px;
-    }
-    input#after_search {
-        width: 100%;
-    }
-}
-/*check files in /iPod
-*/@media only screen and (max-width: 470px) {
-    input#user,
-    input#search_terms,
-    input#subreddit {
         margin-top: 10%;
         height: 5%;
     }
-    .comment_body {
-        width: 300px;
+    .url {
+        font-size: 0.7em;
+    }
+    .shelf {
+        display: inline-grid;
+        align-items: center;
+    }
+    .shelf .logo {
+        display: flex;
+        justify-content: center;
+    }
+    input#user,
+    input#search_terms,
+    input#subreddit {
+        width: 250px;
+    }
+    input#after_search {
+        width: 250px;
     }
     section {
         padding-left: 20px;
     }
+    input#after_search {
+        width: 100%;
+    }
 }
 @media only screen and (max-height: 470px) {
+    header {
+        margin-top: 30px;
+    }
     input#user,
     input#search_terms,
     input#subreddit {
@@ -291,18 +240,19 @@ a.url:visited {
     section {
         padding-left: 20px;
     }
-    .url {
-        overflow-wrap: break-word;
-    }
 }
 @media only screen and (min-width: 721px) {
     input#after_search {
         width: 500px;
     }
+    .mobile {
+        display: none !important;
+    }
 }
 
-/*iPod 6g query*/
-@media only screen and (min-device-width: 320px) and (max-device-width: 375px) {
+/*Phones */
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 415px) and (orientation: portrait) {
     input#user,
     input#search_terms,
     input#subreddit {
@@ -313,11 +263,43 @@ a.url:visited {
         display: flex;
         justify-content: center;
         width: 80%;
-   }
-
+    }
     .short_url {
         overflow-wrap: break-word;
         width: 80%;
     }
-
+    .after_search_container {
+        box-sizing: content-box !important;
+        display: inline-block;
+    }
+    .mobile_instructions {
+        font-family: 'Open Sans', regular;
+        display: flex;
+        text-align: center;
+    }
+    .shelf {
+        height: 217px;
+    }
+    .mobile {
+        visibility: visible;
+        margin-top: 4px;
+    }
+    #searched_results_display .gliph {
+        display: none;
+    }
+    input#user_mobile,
+    input#search_mobile,
+    input#subreddit_mobile {
+        display: flex;
+        align-items: flex-end;
+        width: 100%;
+        height: 35px;
+    }
+    input#subreddit_mobile {
+        margin-bottom: 5px;
+    }
+    input#after_search {
+        display: none;
+        visibility: hidden;
+    }
 }
