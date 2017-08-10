@@ -61,7 +61,13 @@ $(document).ready(function() {
             $('#subreddit_mobile').val(subreddit);
 
             $('.search_results_section').html("");
+
             $('.page_markers_section').html("");
+            $('#my_bootstrap_pager').addClass('hidden');
+             $('#current_page').html("Page 0");
+            $('#current_length').html("0");
+
+
             if (checkInput()) {
                 if (currentRequest != null) {
                     currentRequest.abort();
@@ -103,6 +109,8 @@ $(document).ready(function() {
 
     //When the user starts typing in..
     $(document).keyup(function(e) {
+       // $('#my_bootstrap_pager').addClass('hidden');
+   
         if ((e.which == 13) && $('#searched_results_display').hasClass('hidden')) { //if enter pressed and on front page
             $('#search').click();
         } else {
@@ -149,6 +157,9 @@ $(document).ready(function() {
             queryStatement += ".";
 
             $('.search_results_section').html("");
+            $('#my_bootstrap_pager').addClass('hidden');
+
+
             $('.search_results_section').append(queryStatement + "<br>Results found: <b> <span id='res_number'> 0 </span></b><br>");
             $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
 
@@ -191,7 +202,6 @@ $(document).ready(function() {
 
             if ($('.page').length === 0) {
                 $('.search_results_section').append(getNoMatchMessege(searchterms, username, subreddit));
-
             }
 
         }
@@ -234,10 +244,14 @@ $(document).ready(function() {
 $(document).on('click', '#single_page_checkbox', function() {
     if (this.checked) {
         $('.page_markers_section').addClass('hidden');
+        $('#my_bootstrap_pager').addClass('hidden');
+
         $('.page').removeClass('hidden');
 
     } else {
         $('.page_markers_section').removeClass('hidden');
+        $('#my_bootstrap_pager').removeClass('hidden');
+
         turnPage(1);
     }
 });
@@ -256,6 +270,11 @@ function addPageNumber(page_number) {
 
     }
     if (page_number === 1) {
+
+        $('#my_bootstrap_pager').addClass('hidden');
+         $('#current_page').html(page_number);
+
+
         $('.page_markers_section').addClass('hidden');
         $('#' + page_number).addClass('active');
 
@@ -263,11 +282,16 @@ function addPageNumber(page_number) {
 
         $('.page_' + page_number).addClass('hidden');
         $('.page_markers_section').removeClass('hidden');
+        $('#my_bootstrap_pager').removeClass('hidden');
+
     }
 
     if ($('input[name="single_page_checkbox"]').is(':checked')) {
+
         $('.page').removeClass('hidden');
         $('.page_markers_section').addClass('hidden');
+        $('#my_bootstrap_pager').addClass('hidden');
+
     }
 
 
@@ -364,6 +388,7 @@ function getNoMatchMessege(searchterms, username, subreddit) {
     }
     $('.search_results_section').html("");
     $('#checkbox_section').addClass('hidden');
+
     var noMatchMsg = "<div class='error'><div>Your search for comments";
     if (username) {
         noMatchMsg += " by user <b><a href='https://www.reddit.com/u/" + username + "' target='_blank'>/u/" + username + " </a></b>";
