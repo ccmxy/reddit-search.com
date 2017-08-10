@@ -37,7 +37,7 @@
          </div>
       </section>
 
-    <section class="hidden"><ul class="pagination" > </ul></section>
+    <section class="hidden"><ul class="hidden_page_number_list" > </ul></section>
 
 <section id="my_bootstrap_pager">
   <p style='text-align: center'><span id='current_page'>Page 1</span> / <span class='current_length'></span></p>
@@ -56,7 +56,7 @@
    <!--Main body will be wrapped in this section-->
    <div class="wrapper">
       <div class="search_body">
-         <h1>
+         <h1 title='All three search boxes can be used alone or in combo with the other two. \n\nHover over search boxes for usage details.'>
             <span>R</span>
             <span>e</span>
             <span>d</span>
@@ -65,11 +65,11 @@
             <span>t</span>
             <span>-</span><span>S</span><span>e</span><span>a</span><span>r</span><span>c</span><span>h</span><span>.</span><span>c</span><span>o</span><span>m</span>      
          </h1>
-         <div><input type="text" placeholder="Search Reddit user comments..." id="user" autofocus></div>
+         <div><input type="text" placeholder="Search Reddit user comments..." id="user" autofocus title="Option to only pull comments from specific user. Will grab user\'s most recent 1000 comments."></div>
          <br>
-         <div><input type="text" placeholder="Search for word or phrase in comments..." id="search_terms" autofocus></div>
+         <div><input type="text" placeholder="Search for word or phrase in comments..." id="search_terms" title="Options to only pull comments containing certain word or phrase. If this is the only box specified it will search from most recent 1000 comments in r/all."></div>
          <br>
-         <div><input type="text" placeholder="Search subreddit comments..." id="subreddit" autofocus></div>
+         <div><input type="text" placeholder="Search subreddit comments..." id="subreddit" title="Option to only pull comments from this subreddit. If this is specified and user is not it will pull the most recent 1000 comments from that subreddit."></div>
          <div class="search_buttons">
             <a href="#" class="btn btn-primary" id="search" autofocus>Search</a>
          </div>
