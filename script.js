@@ -299,6 +299,7 @@
 
 
      }
+     var download_data = "";
 
      //Show comment on page if it's a match
      function showComment(comments, searchterms, username, subreddit, nextAfter) {
@@ -321,8 +322,15 @@
                      body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                  }
                  var page_number = Math.ceil((match_ct / 15));
-                 $('.search_results_section').append("<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>");
 
+
+
+                 var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
+                 download_data += result;
+                 $('.search_results_section').append(result);
+                 var data_blob = new Blob([download_data]);
+                 var a = document.getElementById('a');
+                 a.href = URL.createObjectURL(data_blob);
                  addPageNumber(page_number);
              }
 
