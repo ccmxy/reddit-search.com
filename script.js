@@ -299,7 +299,7 @@
 
 
      }
-     var download_data = "";
+     var download_data = "{}";
 
      //Show comment on page if it's a match
      function showComment(comments, searchterms, username, subreddit, nextAfter) {
@@ -336,7 +336,9 @@
                    +'"body"  : "' + body + '",'
                    +'}';
 
-                var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+                   download_data += obj;
+
+                var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(download_data));
 
                 var a = document.getElementById('a');
                 a.setAttribute("href",     dataStr     );
