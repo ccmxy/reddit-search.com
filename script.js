@@ -306,21 +306,28 @@
      function addSmallJsonObject(permalink, body){
         var obj = { "permalink" : permalink, "body" : body };          
         someObj.objects[someObj.objects.length] = obj;
-        var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
-        var a = document.getElementById('a');
-        a.setAttribute("href", download_data);
-        a.setAttribute("download", "scene.json");
+
      }
 
 
 
      function addFullJsonObject(comment){
         someObj.objects[someObj.objects.length] = comment;
+     }
+
+     function setDownloadHref(subreddit, username, searchterms){
         var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
         var a = document.getElementById('a');
         a.setAttribute("href", download_data);
-        a.setAttribute("download", "scene.json");
+        var download_name = "reddit-search";
+        if(subreddit) {download_name += "_SUB_" + subreddit}; 
+        if(username) {download_name += "_USER_" + username}; 
+        if(searchterms ) {download_name += "_SEARCH_" + searchterms}; 
+        download_name += ".json";
+        a.setAttribute("download", download_name);
+
      }
+
 
      //Show comment on page if it's a match
      function showComment(comments, searchterms, username, subreddit, nextAfter) {
@@ -348,9 +355,9 @@
 
                  var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
                  $('.search_results_section').append(result);
-                 // console.log(comments[j]);
-                 addSmallJsonObject(permalink, body);
+                 // addSmallJsonObject(permalink, body);
                  addFullJsonObject(comments[j]);
+                 setDownloadHref(subreddit, username, searchterms);
                  addPageNumber(page_number);
              }
 
