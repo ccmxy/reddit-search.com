@@ -299,14 +299,16 @@
 
 
      }
-     // var download_data = "data:text/json;charset=utf-8, {}";
 
+
+     var someObj =   { "objects" : []};      
 
      function makeJsonObject(permalink, body){
-         var obj = { "permalink" : permalink, "body" : body };          
-        download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
-         var a = document.getElementById('a');
-         a.setAttribute("href", download_data);
+        var obj = { "permalink" : permalink, "body" : body };          
+        someObj.objects[someObj.objects.length] = obj;
+        var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
+        var a = document.getElementById('a');
+        a.setAttribute("href", download_data);
         a.setAttribute("download", "scene.json");
      }
 
