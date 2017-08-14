@@ -338,10 +338,10 @@
 
                    download_data += obj;
 
-                var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(download_data));
+                var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(comments));
 
                 var a = document.getElementById('a');
-                a.setAttribute("href",     dataStr     );
+                a.setAttribute("href", dataStr);
                 a.setAttribute("download", "scene.json");
 
 
