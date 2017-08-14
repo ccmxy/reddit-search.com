@@ -303,9 +303,22 @@
 
      var someObj =   { "objects" : []};      
 
-     function makeJsonObject(permalink, body){
+     function addSmallJsonObject(permalink, body, comment){
+        console.log(comment);
         var obj = { "permalink" : permalink, "body" : body };          
         someObj.objects[someObj.objects.length] = obj;
+        var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
+        var a = document.getElementById('a');
+        a.setAttribute("href", download_data);
+        a.setAttribute("download", "scene.json");
+     }
+
+
+
+     function addFullJsonObject(permalink, body, comment){
+        console.log(comment);
+        var obj = { "permalink" : permalink, "body" : body };          
+        someObj.objects[someObj.objects.length] = comment;
         var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
         var a = document.getElementById('a');
         a.setAttribute("href", download_data);
@@ -338,7 +351,9 @@
 
                  var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
                  $('.search_results_section').append(result);
-                 makeJsonObject(permalink, body);
+                 // console.log(comments[j]);
+                 addSmallJsonObject(permalink, body, comments[j]);
+                 addFullJsonObject(permalink, body, comments[j]);
                  addPageNumber(page_number);
              }
 
