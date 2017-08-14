@@ -326,11 +326,24 @@
 
 
                  var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
-                 download_data += result;
+                 // download_data += result;
                  $('.search_results_section').append(result);
-                 var data_blob = new Blob([download_data]);
-                 var a = document.getElementById('a');
-                 a.href = URL.createObjectURL(data_blob);
+                 // var data_blob = new Blob([download_data]);
+                 // var a = document.getElementById('a');
+
+                    var obj = '{'
+                   +'"permalink" : "' + permalink + '",'
+                   +'"body"  : "' + body + '",'
+                   +'}';
+
+                var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+
+                var a = document.getElementById('a');
+                a.setAttribute("href",     dataStr     );
+                a.setAttribute("download", "scene.json");
+
+
+                 // a.href = URL.createObjectURL(dataStr);
                  addPageNumber(page_number);
              }
 
