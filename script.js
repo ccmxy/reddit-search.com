@@ -303,8 +303,7 @@
 
      var someObj =   { "objects" : []};      
 
-     function addSmallJsonObject(permalink, body, comment){
-        console.log(comment);
+     function addSmallJsonObject(permalink, body){
         var obj = { "permalink" : permalink, "body" : body };          
         someObj.objects[someObj.objects.length] = obj;
         var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
@@ -315,9 +314,7 @@
 
 
 
-     function addFullJsonObject(permalink, body, comment){
-        console.log(comment);
-        var obj = { "permalink" : permalink, "body" : body };          
+     function addFullJsonObject(comment){
         someObj.objects[someObj.objects.length] = comment;
         var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
         var a = document.getElementById('a');
@@ -352,8 +349,8 @@
                  var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
                  $('.search_results_section').append(result);
                  // console.log(comments[j]);
-                 addSmallJsonObject(permalink, body, comments[j]);
-                 addFullJsonObject(permalink, body, comments[j]);
+                 addSmallJsonObject(permalink, body);
+                 addFullJsonObject(comments[j]);
                  addPageNumber(page_number);
              }
 
