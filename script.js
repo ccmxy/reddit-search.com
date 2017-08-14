@@ -299,7 +299,7 @@
 
 
      }
-     var download_data = "{}";
+     var download_data = "";
 
      //Show comment on page if it's a match
      function showComment(comments, searchterms, username, subreddit, nextAfter) {
