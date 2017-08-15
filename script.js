@@ -1,5 +1,5 @@
-     var currentRequest = null;
-     var commentObj =   {"date_fetched":"YYYY-M-DD H:MM:SS", "comments" : []};      
+     var currentRequest = null; 
+     var commentObj =   {"date_fetched":"YYYY-M-DD H:MM:SS", "comments" : []}; //Object to hold json download data
 
      //When the user starts typing in..
      $(document).keyup(function(e) {
@@ -15,6 +15,30 @@
              }
          }
      });
+     
+  $('#search').click(function() {
+         if (checkInput()) {
+             $('#after_search').val("");
+             var username = $('#user').val();
+            var searchterms = $('#search_terms').val();
+            var subreddit = $('#subreddit').val();
+
+            $('#after_search').val($('#after_search').val() + " user=" + username + "::");
+            $('#after_search').val($('#after_search').val() + " search=" + searchterms + "::");
+            $('#after_search').val($('#after_search').val() + " subreddit=" + subreddit + "::");
+
+            $('#user_mobile').val(username);
+            $('#search_mobile').val(searchterms);
+            $('#subreddit_mobile').val(subreddit);
+
+
+            $('.wrapper').addClass('hidden');
+            $('#searched_results_display').removeClass('hidden');            
+            $('#checkbox_section').removeClass('hidden');
+         
+            getResults(username, subreddit, searchterms, null);
+         }
+     });
 
 
      function checkInput() {
@@ -26,34 +50,7 @@
          }
      }
 
-     $('#search').click(function() {
-         if (checkInput()) {
-             $('#after_search').val("");
-             search();
-         }
-     });
-
-
-     function search() {
-         var username = $('#user').val();
-         var searchterms = $('#search_terms').val();
-         var subreddit = $('#subreddit').val();
-
-         $('#after_search').val($('#after_search').val() + " user=" + username + "::");
-         $('#after_search').val($('#after_search').val() + " search=" + searchterms + "::");
-         $('#after_search').val($('#after_search').val() + " subreddit=" + subreddit + "::");
-
-         $('#user_mobile').val(username);
-         $('#search_mobile').val(searchterms);
-         $('#subreddit_mobile').val(subreddit);
-
-
-         $('.wrapper').addClass('hidden');
-         $('#searched_results_display').removeClass('hidden');
-         $('#checkbox_section').removeClass('hidden');
-         getResults(username, subreddit, searchterms, null);
-     }
-
+   
      function mobileKeyPress() {
          $('#after_search').val(" user=" + $('#user_mobile').val() + "::");
          $('#after_search').val($('#after_search').val() + " search=" + $('#search_mobile').val() + "::");
@@ -85,13 +82,99 @@
              if (currentRequest != null) {
                  currentRequest.abort();
              }
-
-             $('#checkbox_section').removeClass('hidden');
+            $('#checkbox_section').removeClass('hidden');
              getResults(username, subreddit, searchterms, null);
          }
      });
 
+     function addQueryStatement(username, subreddit, searchterms){
+            var queryStatement = "<div>Query for comments";
+             if (searchterms) {
+                 queryStatement += " containing <b>" + searchterms + "</b>";
+             }
+             if (username) {
+                 queryStatement += " by <a href='https://www.reddit.com/u/" + username + "' target='_blank'>u/" + username + "</a>";
+             }
+             if (subreddit) {
+                 queryStatement += " in <a href='https://www.reddit.com/r/" + subreddit + "' target='_blank'>r/" + subreddit + "</a>";
+             }
+             queryStatement += ".";
 
+             $('.search_results_section').html("");
+             $('#my_bootstrap_pager').addClass('hidden');
+
+
+             $('.search_results_section').append(queryStatement + "<br>Results found: <b> <span id='res_number'> 0 </span></b><br>");
+             $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
+
+     }
+
+     function getUrl(username, subreddit, searchterms, after){
+        var url; 
+        subreddit = subreddit.split("r/").pop();
+        if (!subreddit && !username) {
+             url = 'https://www.reddit.com/r/all/comments.json';
+         }
+
+         if (subreddit && !username) {
+             url = 'https://www.reddit.com/r/' + subreddit + '/comments.json';
+         }
+         if (username) {
+             url = 'https://www.reddit.com/user/' + username + '/comments.json';
+         }
+
+         if (after != null && after != -1) {
+             url += "?after=" + after;
+         }
+         return url;
+
+     }
+
+     //Get all the results
+     function getResults(username, subreddit, searchterms, after) {
+
+         var url = getUrl(username, subreddit, searchterms, after)
+
+         if (after == null) {
+            addQueryStatement(username, subreddit, searchterms);
+
+         }
+         if (after !== -1) { //While still getting results...
+             currentRequest = $.ajax({
+                 url: url,
+                 dataType: "json",
+                 success: function(commentResponse) {
+                     if (commentResponse.length == 0 && after == null) {
+                         addNoMatchMessege(searchterms, username, subreddit);
+                     } else {
+                         var comments = commentResponse.data.children
+                         var nextAfter;
+                         if (comments[24]) { //MORE COMMENTS AFTER
+                             nextAfter = comments[24].data.name;
+                         } else { //END OF COMMENTS
+                             nextAfter = -1;
+                             $("#query_status_msg").html("<b> Query complete.</b>");
+                             $("#download_json_btn").removeClass('hidden');
+                            setDownloadHref(subreddit, username, searchterms);
+
+                         }
+                         showComments(comments, searchterms, username, subreddit, nextAfter);
+                         getResults(username, subreddit, searchterms, nextAfter);
+                     }
+
+                 },
+                 error: function() {
+                     addNoMatchMessege(searchterms, username, subreddit);
+                 }
+
+             });
+
+         } else if ($('.page').length === 0) {
+             addNoMatchMessege(searchterms, username, subreddit);
+         }
+
+
+     }
 
 
      //************** Pages ***************//
@@ -229,89 +312,8 @@
 
      //*****************************//
 
-     //Get all the results
-     function getResults(username, subreddit, searchterms, after) {
-         subreddit = subreddit.split("r/").pop();
-
-         if (!subreddit && !username) {
-             url = 'https://www.reddit.com/r/all/comments.json';
-         }
-
-         if (subreddit && !username) {
-             url = 'https://www.reddit.com/r/' + subreddit + '/comments.json';
-         }
-         if (username) {
-             url = 'https://www.reddit.com/user/' + username + '/comments.json';
-         }
-
-         if (after != null && after != -1) {
-             url += "?after=" + after;
-         }
-
-         if (after == null) {
-             var queryStatement = "<div>Query for comments";
-             if (searchterms) {
-                 queryStatement += " containing <b>" + searchterms + "</b>";
-             }
-             if (username) {
-                 queryStatement += " by <a href='https://www.reddit.com/u/" + username + "' target='_blank'>u/" + username + "</a>";
-             }
-             if (subreddit) {
-                 queryStatement += " in <a href='https://www.reddit.com/r/" + subreddit + "' target='_blank'>r/" + subreddit + "</a>";
-             }
-             queryStatement += ".";
-
-             $('.search_results_section').html("");
-             $('#my_bootstrap_pager').addClass('hidden');
-
-
-             $('.search_results_section').append(queryStatement + "<br>Results found: <b> <span id='res_number'> 0 </span></b><br>");
-             $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
-
-
-         }
-         if (after !== -1) {
-             currentRequest = $.ajax({
-                 url: url,
-                 dataType: "json",
-                 success: function(commentResponse) {
-
-                     if (commentResponse.length == 0 && after == null) {
-                         addNoMatchMessege(searchterms, username, subreddit);
-                     } else {
-                         var comments = commentResponse.data.children
-                         var nextAfter;
-                         if (comments[24]) {
-                             nextAfter = comments[24].data.name;
-                         } else {
-                             nextAfter = -1;
-                             $("#query_status_msg").html("<b> Query complete.</b>");
-                             $("#download_json_btn").removeClass('hidden');
-                            setDownloadHref(subreddit, username, searchterms);
-
-                         }
-                         showComment(comments, searchterms, username, subreddit, nextAfter);
-                         getResults(username, subreddit, searchterms, nextAfter);
-                     }
-
-                 },
-                 error: function() {
-                     addNoMatchMessege(searchterms, username, subreddit);
-                     $('#checkbox_section').addClass('hidden');
-                 }
-
-             });
-
-
-         } else if ($('.page').length === 0) {
-             addNoMatchMessege(searchterms, username, subreddit);
-         }
-
-
-     }
-
      //Show comment on page if it's a match
-     function showComment(comments, searchterms, username, subreddit, nextAfter) {
+     function showComments(comments, searchterms, username, subreddit, nextAfter) {
 
          for (var j = 0; j < comments.length; j++) {
              var body = clean(comments[j].data.body_html);
@@ -393,7 +395,8 @@
          noMatchMsg += " did not return any matches. <br> <div>Possible issues:</div> <br> <ul>" +
              "<li>Do not use quotes unless you actually want to search for quotes.</li>" +
              "<li>Non-mobile site: make sure that all queiry options end in '::'. For example, user=spez::</li>" +
-             "<li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li></ul></div>";
+             "<li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li>" + 
+             "<li>Example 3: <b>search=I think && you:: </b></li></ul></div>";
 
          $('.search_results_section').append(noMatchMsg);
      }
