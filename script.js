@@ -1,4 +1,5 @@
      var currentRequest = null;
+     var someObj =   { "objects" : []};      
 
      //When the user starts typing in..
      $(document).keyup(function(e) {
@@ -278,6 +279,10 @@
                          } else {
                              nextAfter = -1;
                              $("#query_status_msg").html("<b> Query complete.</b>");
+                             $('a').removeClass('invisible');
+                             // setDownloadHref(subreddit, username, searchterms);
+
+
 
                          }
                          showComment(comments, searchterms, username, subreddit, nextAfter);
@@ -301,7 +306,7 @@
      }
 
 
-     var someObj =   { "objects" : []};      
+     // var someObj =   { "objects" : []};      
 
      function addSmallJsonObject(permalink, body){
         var obj = { "permalink" : permalink, "body" : body };          
@@ -358,6 +363,7 @@
                  // addSmallJsonObject(permalink, body);
                  addFullJsonObject(comments[j]);
                  setDownloadHref(subreddit, username, searchterms);
+
                  addPageNumber(page_number);
              }
 
