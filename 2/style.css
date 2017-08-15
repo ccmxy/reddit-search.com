@@ -6,6 +6,10 @@ body {
 .highlight {
     background-color: yellow;
 }
+.bold{
+    font-size: 1.25em;
+    font-weight: bold;
+}
 .loading {
     font-size: 15px;
 }
@@ -136,9 +140,6 @@ input#subreddit {
 }
 .shelf {
     height: 217px;
-}
-.center {
-    text-align: center;
 }
 .mobile {
     visibility: visible;
