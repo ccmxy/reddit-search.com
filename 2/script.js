@@ -4,47 +4,15 @@
          "comments": []
      }; //Object to hold json download data
 
-     //When the user starts typing in..
-     $(document).keyup(function(e) {
-         // if ((e.which == 13) && $('#searched_results_display').hasClass('hidden')) { //if enter pressed and on front page
-         //     $('#search').click();
-         // } else {
-         //     if (!($('#searched_results_display').hasClass('hidden'))) {
-                 if ($('#after_search').is(":visible") && $('#after_search').is(":focus")) {
-                     $('.after_search_container span').click();
-                 } else if ($('#search_mobile').is(":focus") || $('#subreddit_mobile').is(":focus") || $('#user_mobile').is(":focus")){
-                        mobileKeyPress();
-                 }
-             // }
-         // }
-     });
-
      $('#my_bootstrap_pager').addClass('hidden');
      $('#checkbox_section').addClass('hidden');
 
-     // $('#search').click(function() {
-     //     if (checkInput()) {
-     //         $('#after_search').val("");
-     //         var username = $('#user').val();
-     //         var searchterms = $('#search_terms').val();
-     //         var subreddit = $('#subreddit').val();
-
-     //         $('#after_search').val($('#after_search').val() + " user=" + username + "::");
-     //         $('#after_search').val($('#after_search').val() + " search=" + searchterms + "::");
-     //         $('#after_search').val($('#after_search').val() + " subreddit=" + subreddit + "::");
-
-     //         $('#user_mobile').val(username);
-     //         $('#search_mobile').val(searchterms);
-     //         $('#subreddit_mobile').val(subreddit);
-
-
-     //         $('.wrapper').addClass('hidden');
-     //         $('#searched_results_display').removeClass('hidden');
-     //         $('#checkbox_section').removeClass('hidden');
-
-     //         getResults(username, subreddit, searchterms, null);
-     //     }
-     // });
+     //When the user starts typing in..
+     $(document).keyup(function(e) {
+         if ($('#search_mobile').is(":focus") || $('#subreddit_mobile').is(":focus") || $('#user_mobile').is(":focus")) {
+             search();
+         }
+     });
 
 
      function checkInput() {
@@ -56,16 +24,7 @@
          }
      }
 
-
-     function mobileKeyPress() {
-         $('#after_search').val(" user=" + $('#user_mobile').val() + "::");
-         $('#after_search').val($('#after_search').val() + " search=" + $('#search_mobile').val() + "::");
-         $('#after_search').val($('#after_search').val() + " subreddit=" + $('#subreddit_mobile').val() + "::");
-         $('.after_search_container span').click();
-     }
-
-
-     $('.after_search_container span').click(function() {
+     function search() {
          $('.hidden_page_number_list').html("");
          $('.search_results_section').html("");
          $('#download_json_btn').addClass('hidden');
@@ -74,15 +33,9 @@
          $('#current_length').html("0");
 
          var fullSearchString = $('#after_search').val();
-         var username = getStringBetween(fullSearchString, "user=", '::');
-         var subreddit = getStringBetween(fullSearchString, "subreddit=", '::');
-         var searchterms = getStringBetween(fullSearchString, 'search=', '::');
-
-         //In case for some reason we wanted to rapidly switch from desktop to mobile...
-         $('#user_mobile').val(username);
-         $('#search_mobile').val(searchterms);
-         $('#subreddit_mobile').val(subreddit);
-
+         var username = $('#user_mobile').val();
+         var subreddit = $('#subreddit_mobile').val();
+         var searchterms = $('#search_mobile').val();
 
          if (checkInput()) {
              if (currentRequest != null) {
@@ -91,7 +44,7 @@
              $('#checkbox_section').removeClass('hidden');
              getResults(username, subreddit, searchterms, null);
          }
-     });
+     }
 
      function addQueryStatement(username, subreddit, searchterms) {
          var queryStatement = "<div>Query for comments";
@@ -310,12 +263,6 @@
          return fullSearchString.substring(preIndex + preString.length, postStringIndex);
      };
 
-     if (!String.prototype.trim) {
-         String.prototype.trim = function() {
-             return this.replace(/^\s+|\s+$/g, '');
-         };
-     }
-
      //*****************************//
 
      //Show comment on page if it's a match
@@ -367,7 +314,6 @@
      function getAllSearch(searchterms) {
          var splitSearch = searchterms.split('&&');
          for (var i = 0; i < splitSearch.length; i++) {
-             splitSearch[i] = splitSearch[i].trim();
          }
          return splitSearch;
      }
@@ -387,7 +333,7 @@
          $('.my_bootstrap_pager').addClass('hidden');
          $('#checkbox_section').addClass('hidden');
 
-         var noMatchMsg = "<div class='error'><div>Your search for comments";
+         var noMatchMsg = "<div class='error'>Your search for comments";
          if (username && username !== "") {
              noMatchMsg += " by user <b><a href='https://www.reddit.com/u/" + username + "' target='_blank'>/u/" + username + " </a></b>";
          }
@@ -398,12 +344,10 @@
              noMatchMsg += " in <b><a href='https://www.reddit.com/r/" + subreddit + "' target='_blank'>r/" + subreddit + "</a></b>";
          }
 
-         noMatchMsg += " did not return any matches. <br> <div>Possible issues:</div> <br> <ul>" +
-             "<li>Do not use quotes unless you actually want to search for quotes.</li>" +
-             "<li>Non-mobile site: make sure that all queiry options end in '::'. For example, user=spez::</li>" +
-             "<li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li>" +
-             "<li>Example 3: <b>search=I think && you:: </b></li></ul></div>";
-
+         noMatchMsg += " did not return any matches. <br><br> <div>Possible issues:<br></div> <ul>" +
+             "<li>Username, subreddit or search phrases may be spelled wrong.</li>" +
+             "<li>If searching multiple search terms with &&, if you used a space ' ' before or after a search term, it will include those spaces in the search.</li>" +
+             " <em>For example:</b> <b>me && you</b> will not find <b>me!</b> or a comment that <b>starts with</b> the word <b>you</b> because of the spaces after me and before you.</em></div>";
          $('.search_results_section').append(noMatchMsg);
      }
 
