@@ -65,6 +65,7 @@
      $('.after_search_container span').click(function() {
          $('.hidden_page_number_list').html("");
          $('.search_results_section').html("");
+         $('#download_json_btn').addClass('hidden');
          $('#my_bootstrap_pager').addClass('hidden');
          $('#current_page').html("Page 0");
          $('#current_length').html("0");
