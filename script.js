@@ -279,8 +279,8 @@
                          } else {
                              nextAfter = -1;
                              $("#query_status_msg").html("<b> Query complete.</b>");
-                             $('a').removeClass('invisible');
-                             // setDownloadHref(subreddit, username, searchterms);
+                             $('a').removeClass('hidden');
+                            setDownloadHref(subreddit, username, searchterms);
 
 
 
@@ -306,20 +306,12 @@
      }
 
 
-     // var someObj =   { "objects" : []};      
-
      function addSmallJsonObject(permalink, body, subreddit, author){
         var obj = { "author" : author, "subreddit" : subreddit, "permalink" : permalink, "body" : body, };          
         someObj.objects[someObj.objects.length] = obj;
 
      }
 
-
-
-     function addFullJsonObject(comment){
-        var commentJson = comment_subreddit;
-        someObj.objects[someObj.objects.length] = commentJson;
-     }
 
      function setDownloadHref(subreddit, username, searchterms){
         var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
@@ -363,8 +355,6 @@
                  $('.search_results_section').append(result);
                  addSmallJsonObject(permalink, body, comment_subreddit, comments[j].data.author);
                  // addFullJsonObject(comments[j]);
-                 setDownloadHref(subreddit, username, searchterms);
-
                  addPageNumber(page_number);
              }
 
