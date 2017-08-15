@@ -365,7 +365,6 @@
 
 
      //Preparing download
-
      function addJsonObject(permalink, body, subreddit, author, created_utc){
         var date = new Date(created_utc * 1000);
         var obj = { "author" : author, "created_utc" : date, "subreddit" : subreddit, "permalink" : permalink, "body" : body };          
