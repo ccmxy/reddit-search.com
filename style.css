@@ -14,9 +14,6 @@ body {
     font-weight: bold;
 }
 
-.invisible {
-    visibility: hidden;
-}
 .wrapper {
     height: 100%;
     width: 100%;
