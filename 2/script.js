@@ -1,5 +1,5 @@
      var currentRequest = null;
-     var commentObj = {
+     var commentObj = { 
          "date_fetched": "YYYY-M-DD H:MM:SS",
          "comments": []
      }; //Object to hold json download data
@@ -11,19 +11,10 @@
          }
      });
 
-
-     function addIntroMessege() {
-         var msg = "<p style='text-align: center;'> Welcome to reddit-search.com! <br><br> Instantly search <span class='bold'>reddit comments</span> by <span class='bold'>" +
-             "username</span>, <span class='bold'>search phrase</span>, <span class='bold'>subreddit</span>, or <span class='bold'>any</span> combination of the three. <br><br>" +
-             "To search for multiple phrases, add <span class='bold'>&amp;&amp;</span> between phrases you want to search.<em> Phrases Example: <span class='bold'>I think &amp;&amp; I have</span></em> <br><br>" +
-             "Note: Do not use <span class='bold'>quotes</span> in your query unless you want to search for quotes.</p>";
-         $('.search_results_section').html(msg);
-     }
-
      function checkInput() {
          if ($('#search_mobile').val() == "" && $('#subreddit_mobile').val() == "" && $('#user_mobile').val() == "") {
-             alert('Please enter a something into one, two, or all three boxes to perform a comment search.');
-             // addIntroMessege();
+            $('.intro').removeClass('hidden');     
+            $('.comments').addClass('hidden');     
              return false;
          } else {
              return true;
@@ -32,7 +23,10 @@
 
      function search() {
          $('.hidden_page_number_list').html("");
-         $('.search_results_section').html("");
+         $('.comments').html("");
+         $('.intro').addClass('hidden');     
+         $('.comments').removeClass('hidden');
+
          $('#download_json_btn').addClass('hidden');
          $('#my_bootstrap_pager').addClass('hidden');
          $('#current_page').html("Page 0");
@@ -43,14 +37,15 @@
          var subreddit = $('#subreddit_mobile').val();
          var searchterms = $('#search_mobile').val();
 
+         if (currentRequest != null) {
+            currentRequest.abort();
+         }
+
          if (checkInput()) {
-             // if (currentRequest != null) {
-             //     currentRequest.abort();
-             // }
              $('#checkbox_section').removeClass('hidden');
              getResults(username, subreddit, searchterms, null);
-
          }
+
      }
 
      function addQueryStatement(username, subreddit, searchterms) {
@@ -66,12 +61,12 @@
          }
          queryStatement += ".";
 
-         $('.search_results_section').html("");
+         $('.comments').html("");
          $('#my_bootstrap_pager').addClass('hidden');
 
 
-         $('.search_results_section').append(queryStatement + "<br>Results found: <b> <span id='res_number'> 0 </span></b><br>");
-         $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
+         $('.comments').append(queryStatement + "<br>Results found: <b> <span id='res_number'> 0 </span></b><br>");
+         $('.comments').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
 
      }
 
@@ -297,7 +292,7 @@
                  var page_number = Math.ceil((match_ct / 15));
 
                  var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
-                 $('.search_results_section').append(result);
+                 $('.comments').append(result);
                  addJsonObject(permalink, body, comment_subreddit, comments[j].data.author, comments[j].data.created_utc);
                  addPageNumber(page_number);
              }
@@ -320,7 +315,8 @@
 
      function getAllSearch(searchterms) {
          var splitSearch = searchterms.split('&&');
-         for (var i = 0; i < splitSearch.length; i++) {}
+         for (var i = 0; i < splitSearch.length; i++) {
+         }
          return splitSearch;
      }
 
@@ -335,7 +331,7 @@
 
      //No matches
      function addNoMatchMessege(searchterms, username, subreddit) {
-         $('.search_results_section').html("");
+         $('.comments').html("");
          $('.my_bootstrap_pager').addClass('hidden');
          $('#checkbox_section').addClass('hidden');
 
@@ -354,7 +350,7 @@
              "<li>Username, subreddit or search phrases may be spelled wrong.</li>" +
              "<li>If searching multiple search terms with &&, if you used a space ' ' before or after a search term, it will include those spaces in the search.</li>" +
              " <em>For example:</b> <b>me && you</b> will not find <b>me!</b> or a comment that <b>starts with</b> the word <b>you</b> because of the spaces after me and before you.</em></div>";
-         $('.search_results_section').append(noMatchMsg);
+         $('.comments').append(noMatchMsg);
      }
 
 
