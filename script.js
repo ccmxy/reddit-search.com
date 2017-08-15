@@ -1,5 +1,8 @@
-     var currentRequest = null; 
-     var commentObj =   {"date_fetched":"YYYY-M-DD H:MM:SS", "comments" : []}; //Object to hold json download data
+     var currentRequest = null;
+     var commentObj = {
+         "date_fetched": "YYYY-M-DD H:MM:SS",
+         "comments": []
+     }; //Object to hold json download data
 
      //When the user starts typing in..
      $(document).keyup(function(e) {
@@ -7,36 +10,36 @@
              $('#search').click();
          } else {
              if (!($('#searched_results_display').hasClass('hidden'))) {
-                 if ($('#after_search').is(":visible")) {
+                 if ($('#after_search').is(":visible") && $('#after_search').is(":focus")) {
                      $('.after_search_container span').click();
-                 } else {
-                     mobileKeyPress();
+                 } else if ($('#search_mobile').is(":focus") || $('#subreddit_mobile').is(":focus") || $('#user_mobile').is(":focus")){
+                        mobileKeyPress();
                  }
              }
          }
      });
-     
-  $('#search').click(function() {
+
+     $('#search').click(function() {
          if (checkInput()) {
              $('#after_search').val("");
              var username = $('#user').val();
-            var searchterms = $('#search_terms').val();
-            var subreddit = $('#subreddit').val();
+             var searchterms = $('#search_terms').val();
+             var subreddit = $('#subreddit').val();
 
-            $('#after_search').val($('#after_search').val() + " user=" + username + "::");
-            $('#after_search').val($('#after_search').val() + " search=" + searchterms + "::");
-            $('#after_search').val($('#after_search').val() + " subreddit=" + subreddit + "::");
+             $('#after_search').val($('#after_search').val() + " user=" + username + "::");
+             $('#after_search').val($('#after_search').val() + " search=" + searchterms + "::");
+             $('#after_search').val($('#after_search').val() + " subreddit=" + subreddit + "::");
 
-            $('#user_mobile').val(username);
-            $('#search_mobile').val(searchterms);
-            $('#subreddit_mobile').val(subreddit);
+             $('#user_mobile').val(username);
+             $('#search_mobile').val(searchterms);
+             $('#subreddit_mobile').val(subreddit);
 
 
-            $('.wrapper').addClass('hidden');
-            $('#searched_results_display').removeClass('hidden');            
-            $('#checkbox_section').removeClass('hidden');
-         
-            getResults(username, subreddit, searchterms, null);
+             $('.wrapper').addClass('hidden');
+             $('#searched_results_display').removeClass('hidden');
+             $('#checkbox_section').removeClass('hidden');
+
+             getResults(username, subreddit, searchterms, null);
          }
      });
 
@@ -50,7 +53,7 @@
          }
      }
 
-   
+
      function mobileKeyPress() {
          $('#after_search').val(" user=" + $('#user_mobile').val() + "::");
          $('#after_search').val($('#after_search').val() + " search=" + $('#search_mobile').val() + "::");
@@ -82,37 +85,37 @@
              if (currentRequest != null) {
                  currentRequest.abort();
              }
-            $('#checkbox_section').removeClass('hidden');
+             $('#checkbox_section').removeClass('hidden');
              getResults(username, subreddit, searchterms, null);
          }
      });
 
-     function addQueryStatement(username, subreddit, searchterms){
-            var queryStatement = "<div>Query for comments";
-             if (searchterms) {
-                 queryStatement += " containing <b>" + searchterms + "</b>";
-             }
-             if (username) {
-                 queryStatement += " by <a href='https://www.reddit.com/u/" + username + "' target='_blank'>u/" + username + "</a>";
-             }
-             if (subreddit) {
-                 queryStatement += " in <a href='https://www.reddit.com/r/" + subreddit + "' target='_blank'>r/" + subreddit + "</a>";
-             }
-             queryStatement += ".";
+     function addQueryStatement(username, subreddit, searchterms) {
+         var queryStatement = "<div>Query for comments";
+         if (searchterms) {
+             queryStatement += " containing <b>" + searchterms + "</b>";
+         }
+         if (username) {
+             queryStatement += " by <a href='https://www.reddit.com/u/" + username + "' target='_blank'>u/" + username + "</a>";
+         }
+         if (subreddit) {
+             queryStatement += " in <a href='https://www.reddit.com/r/" + subreddit + "' target='_blank'>r/" + subreddit + "</a>";
+         }
+         queryStatement += ".";
 
-             $('.search_results_section').html("");
-             $('#my_bootstrap_pager').addClass('hidden');
+         $('.search_results_section').html("");
+         $('#my_bootstrap_pager').addClass('hidden');
 
 
-             $('.search_results_section').append(queryStatement + "<br>Results found: <b> <span id='res_number'> 0 </span></b><br>");
-             $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
+         $('.search_results_section').append(queryStatement + "<br>Results found: <b> <span id='res_number'> 0 </span></b><br>");
+         $('.search_results_section').append("<b><span id='query_status_msg'><font color='red'> <span class='loading'>Hang tight, still looking for more results</font></span></span></b><br><br></div>");
 
      }
 
-     function getUrl(username, subreddit, searchterms, after){
-        var url; 
-        subreddit = subreddit.split("r/").pop();
-        if (!subreddit && !username) {
+     function getUrl(username, subreddit, searchterms, after) {
+         var url;
+         subreddit = subreddit.split("r/").pop();
+         if (!subreddit && !username) {
              url = 'https://www.reddit.com/r/all/comments.json';
          }
 
@@ -136,7 +139,7 @@
          var url = getUrl(username, subreddit, searchterms, after)
 
          if (after == null) {
-            addQueryStatement(username, subreddit, searchterms);
+             addQueryStatement(username, subreddit, searchterms);
 
          }
          if (after !== -1) { //While still getting results...
@@ -155,7 +158,7 @@
                              nextAfter = -1;
                              $("#query_status_msg").html("<b> Query complete.</b>");
                              $("#download_json_btn").removeClass('hidden');
-                            setDownloadHref(subreddit, username, searchterms);
+                             setDownloadHref(subreddit, username, searchterms);
 
                          }
                          showComments(comments, searchterms, username, subreddit, nextAfter);
@@ -304,11 +307,11 @@
          return fullSearchString.substring(preIndex + preString.length, postStringIndex);
      };
 
-     if(!String.prototype.trim) {  
-        String.prototype.trim = function () {  
-        return this.replace(/^\s+|\s+$/g,'');  
-      };  
-    }
+     if (!String.prototype.trim) {
+         String.prototype.trim = function() {
+             return this.replace(/^\s+|\s+$/g, '');
+         };
+     }
 
      //*****************************//
 
@@ -328,7 +331,7 @@
              console.log(searchtermsArray);
              var trueOrNot = doesContainSearchTerms(body, searchtermsArray);
              console.log(trueOrNot);
-             if ( doesContainSearchTerms(body, searchtermsArray)) {
+             if (doesContainSearchTerms(body, searchtermsArray)) {
                  match_ct = parseInt(document.getElementById("res_number").innerHTML) + 1;
                  $('#res_number').html(match_ct);
 
@@ -347,33 +350,33 @@
 
 
 
-     function highlightAll(body, searchtermsArray){
-            var currSearch;
-            for(var i = 0; i < searchtermsArray.length; i++){
-                 if(searchtermsArray[i]){
-                currSearch = searchtermsArray[i];
-                body = body.replaceAll(currSearch, '<span class=highlight><b>' + currSearch + '</b></span>');
+     function highlightAll(body, searchtermsArray) {
+         var currSearch;
+         for (var i = 0; i < searchtermsArray.length; i++) {
+             if (searchtermsArray[i]) {
+                 currSearch = searchtermsArray[i];
+                 body = body.replaceAll(currSearch, '<span class=highlight><b>' + currSearch + '</b></span>');
              }
-            }
-        return body;
+         }
+         return body;
      }
 
-     function getAllSearch(searchterms){
+     function getAllSearch(searchterms) {
          var splitSearch = searchterms.split('&&');
-         for(var i = 0; i < splitSearch.length; i++){
-            splitSearch[i] = splitSearch[i].trim();
+         for (var i = 0; i < splitSearch.length; i++) {
+             splitSearch[i] = splitSearch[i].trim();
          }
          return splitSearch;
      }
 
-     function doesContainSearchTerms(body, searchtermsArray){
-         for(var i = 0; i < searchtermsArray.length; i++){
-            if (!(contains(body.toLowerCase(), searchtermsArray[i].toLowerCase()))) {
-                return false;
-            }
-        }
-        return true;
-       }
+     function doesContainSearchTerms(body, searchtermsArray) {
+         for (var i = 0; i < searchtermsArray.length; i++) {
+             if (!(contains(body.toLowerCase(), searchtermsArray[i].toLowerCase()))) {
+                 return false;
+             }
+         }
+         return true;
+     }
 
      //No matches
      function addNoMatchMessege(searchterms, username, subreddit) {
@@ -395,7 +398,7 @@
          noMatchMsg += " did not return any matches. <br> <div>Possible issues:</div> <br> <ul>" +
              "<li>Do not use quotes unless you actually want to search for quotes.</li>" +
              "<li>Non-mobile site: make sure that all queiry options end in '::'. For example, user=spez::</li>" +
-             "<li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li>" + 
+             "<li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li>" +
              "<li>Example 3: <b>search=I think && you:: </b></li></ul></div>";
 
          $('.search_results_section').append(noMatchMsg);
@@ -404,29 +407,41 @@
 
 
      //Preparing download
-     function addJsonObject(permalink, body, subreddit, author, created_utc){
-        var date = new Date(created_utc * 1000);
-        var obj = { "author" : author, "created_utc" : date, "subreddit" : subreddit, "permalink" : permalink, "body" : body };          
-        commentObj.comments[commentObj.comments.length] = obj;
+     function addJsonObject(permalink, body, subreddit, author, created_utc) {
+         var date = new Date(created_utc * 1000);
+         var obj = {
+             "author": author,
+             "created_utc": date,
+             "subreddit": subreddit,
+             "permalink": permalink,
+             "body": body
+         };
+         commentObj.comments[commentObj.comments.length] = obj;
 
      }
 
-     function setDownloadHref(subreddit, username, searchterms){
-        commentObj.date_fetched = getDateTime();
-        var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(commentObj));
-        var download_name = "reddit-search";
-        if(subreddit) {download_name += "_SUB_" + subreddit}; 
-        if(username) {download_name += "_USER_" + username}; 
-        if(searchterms ) {download_name += "_SEARCH_" + searchterms}; 
-        download_name += ".json";
+     function setDownloadHref(subreddit, username, searchterms) {
+         commentObj.date_fetched = getDateTime();
+         var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(commentObj));
+         var download_name = "reddit-search";
+         if (subreddit) {
+             download_name += "_SUB_" + subreddit
+         };
+         if (username) {
+             download_name += "_USER_" + username
+         };
+         if (searchterms) {
+             download_name += "_SEARCH_" + searchterms
+         };
+         download_name += ".json";
 
-        $('#download_json_btn').attr('href', download_data);
-        $('#download_json_btn').attr('download', download_name);
+         $('#download_json_btn').attr('href', download_data);
+         $('#download_json_btn').attr('download', download_name);
      }
 
-     function getDateTime(){
-        var today = new Date();
-        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        return date+' '+time;
+     function getDateTime() {
+         var today = new Date();
+         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+         return date + ' ' + time;
      }
