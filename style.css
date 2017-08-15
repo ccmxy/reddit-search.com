@@ -48,16 +48,7 @@ body {
     
     width: 0px;
 }
-@keyframes ellipsis {
-    to {
-        width: 1.25em;
-    }
-}
-@-webkit-keyframes ellipsis {
-    to {
-        width: 1.25em;
-    }
-}
+
 #about {
     display: flex;
     justify-content: center;
@@ -296,4 +287,41 @@ a.url:visited {
         display: none;
         visibility: hidden;
     }
+}
+
+@keyframes ellipsis {
+    to {
+        width: 1.25em;
+    }
+}
+@-webkit-keyframes ellipsis {
+    to {
+        width: 1.25em;
+    }
+}
+@-moz-keyframes ellipsis {
+    to {
+        width: 1.25em;
+    }
+}
+@-o-keyframes ellipsis {
+    to {
+        width: 1.25em;
+    }
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;  
+}
+
+:-ms-input-placeholder {  
+   text-align: center; 
 }
