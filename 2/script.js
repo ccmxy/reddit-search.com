@@ -4,9 +4,6 @@
          "comments": []
      }; //Object to hold json download data
 
-     $('#my_bootstrap_pager').addClass('hidden');
-     $('#checkbox_section').addClass('hidden');
-
      //When the user starts typing in..
      $(document).keyup(function(e) {
          if ($('#search_mobile').is(":focus") || $('#subreddit_mobile').is(":focus") || $('#user_mobile').is(":focus")) {
@@ -15,9 +12,18 @@
      });
 
 
+     function addIntroMessege() {
+         var msg = "<p style='text-align: center;'> Welcome to reddit-search.com! <br><br> Instantly search <span class='bold'>reddit comments</span> by <span class='bold'>" +
+             "username</span>, <span class='bold'>search phrase</span>, <span class='bold'>subreddit</span>, or <span class='bold'>any</span> combination of the three. <br><br>" +
+             "To search for multiple phrases, add <span class='bold'>&amp;&amp;</span> between phrases you want to search.<em> Phrases Example: <span class='bold'>I think &amp;&amp; I have</span></em> <br><br>" +
+             "Note: Do not use <span class='bold'>quotes</span> in your query unless you want to search for quotes.</p>";
+         $('.search_results_section').html(msg);
+     }
+
      function checkInput() {
          if ($('#search_mobile').val() == "" && $('#subreddit_mobile').val() == "" && $('#user_mobile').val() == "") {
              alert('Please enter a something into one, two, or all three boxes to perform a comment search.');
+             // addIntroMessege();
              return false;
          } else {
              return true;
@@ -38,9 +44,9 @@
          var searchterms = $('#search_mobile').val();
 
          if (checkInput()) {
-             if (currentRequest != null) {
-                 currentRequest.abort();
-             }
+             // if (currentRequest != null) {
+             //     currentRequest.abort();
+             // }
              $('#checkbox_section').removeClass('hidden');
              getResults(username, subreddit, searchterms, null);
 
@@ -314,8 +320,7 @@
 
      function getAllSearch(searchterms) {
          var splitSearch = searchterms.split('&&');
-         for (var i = 0; i < splitSearch.length; i++) {
-         }
+         for (var i = 0; i < splitSearch.length; i++) {}
          return splitSearch;
      }
 
