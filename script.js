@@ -279,7 +279,7 @@
                          } else {
                              nextAfter = -1;
                              $("#query_status_msg").html("<b> Query complete.</b>");
-                             $('a').removeClass('hidden');
+                             $("#download_json_btn").removeClass('hidden');
                             setDownloadHref(subreddit, username, searchterms);
 
 
@@ -306,7 +306,7 @@
      }
 
 
-     function addSmallJsonObject(permalink, body, subreddit, author){
+     function addJsonObject(permalink, body, subreddit, author){
         var obj = { "author" : author, "subreddit" : subreddit, "permalink" : permalink, "body" : body, };          
         someObj.objects[someObj.objects.length] = obj;
 
@@ -315,15 +315,14 @@
 
      function setDownloadHref(subreddit, username, searchterms){
         var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
-        var a = document.getElementById('a');
-        a.setAttribute("href", download_data);
         var download_name = "reddit-search";
         if(subreddit) {download_name += "_SUB_" + subreddit}; 
         if(username) {download_name += "_USER_" + username}; 
         if(searchterms ) {download_name += "_SEARCH_" + searchterms}; 
         download_name += ".json";
-        a.setAttribute("download", download_name);
 
+        $('#download_json_btn').attr('href', download_data);
+        $('#download_json_btn').attr('download', download_name);
      }
 
 
@@ -349,12 +348,9 @@
                  }
                  var page_number = Math.ceil((match_ct / 15));
 
-
-
                  var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
                  $('.search_results_section').append(result);
-                 addSmallJsonObject(permalink, body, comment_subreddit, comments[j].data.author);
-                 // addFullJsonObject(comments[j]);
+                 addJsonObject(permalink, body, comment_subreddit, comments[j].data.author);
                  addPageNumber(page_number);
              }
 
