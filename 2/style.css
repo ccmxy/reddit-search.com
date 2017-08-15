@@ -163,11 +163,11 @@ input#after_search {
     display: none;
     visibility: hidden;
 }
-@media only screen and (min-device-width: 380px) {
-    p.mobile_instructions {
+
+   p.mobile_instructions {
         justify-content: center;
     }
-}
+
 @media only screen and (min-width: 721px) {
     input#user_mobile,
     input#search_mobile,

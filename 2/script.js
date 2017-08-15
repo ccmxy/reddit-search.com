@@ -43,6 +43,7 @@
              }
              $('#checkbox_section').removeClass('hidden');
              getResults(username, subreddit, searchterms, null);
+
          }
      }
 
