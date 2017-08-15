@@ -330,7 +330,7 @@
 
                  var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
                  $('.search_results_section').append(result);
-                 addJsonObject(permalink, body, comment_subreddit, comments[j].data.author);
+                 addJsonObject(permalink, body, comment_subreddit, comments[j].data.author, comments[j].data.created_utc);
                  addPageNumber(page_number);
              }
 
@@ -366,8 +366,10 @@
 
      //Preparing download
 
-     function addJsonObject(permalink, body, subreddit, author){
-        var obj = { "author" : author, "subreddit" : subreddit, "permalink" : permalink, "body" : body, };          
+     function addJsonObject(permalink, body, subreddit, author, created_utc){
+        var utcIsoDate = new Date(created_utc).toISOString();
+        var date = new Date(created_utc * 1000);
+        var obj = { "author" : author, "created_utc" : date, "subreddit" : subreddit, "permalink" : permalink, "body" : body };          
         commentObj.comments[commentObj.comments.length] = obj;
 
      }
