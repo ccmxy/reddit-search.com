@@ -221,6 +221,12 @@
          return fullSearchString.substring(preIndex + preString.length, postStringIndex);
      };
 
+     if(!String.prototype.trim) {  
+        String.prototype.trim = function () {  
+        return this.replace(/^\s+|\s+$/g,'');  
+      };  
+    }
+
      //*****************************//
 
      //Get all the results
@@ -283,8 +289,6 @@
                              $("#download_json_btn").removeClass('hidden');
                             setDownloadHref(subreddit, username, searchterms);
 
-
-
                          }
                          showComment(comments, searchterms, username, subreddit, nextAfter);
                          getResults(username, subreddit, searchterms, nextAfter);
@@ -318,14 +322,16 @@
                  }
              }
              searchterms = sanitize(searchterms);
-             if (contains(body.toLowerCase(), searchterms.toLowerCase())) {
+             var searchtermsArray = getAllSearch(searchterms);
+             console.log(searchtermsArray);
+             var trueOrNot = doesContainSearchTerms(body, searchtermsArray);
+             console.log(trueOrNot);
+             if ( doesContainSearchTerms(body, searchtermsArray)) {
                  match_ct = parseInt(document.getElementById("res_number").innerHTML) + 1;
                  $('#res_number').html(match_ct);
 
                  var permalink = comments[j].data.link_permalink + comments[j].data.id;
-                 if (searchterms) {
-                     body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
-                 }
+                 body = highlightAll(body, searchtermsArray); //Highlight search terms 
                  var page_number = Math.ceil((match_ct / 15));
 
                  var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
@@ -336,6 +342,36 @@
 
          }
      }
+
+
+
+     function highlightAll(body, searchtermsArray){
+            var currSearch;
+            for(var i = 0; i < searchtermsArray.length; i++){
+                 if(searchtermsArray[i]){
+                currSearch = searchtermsArray[i];
+                body = body.replaceAll(currSearch, '<span class=highlight><b>' + currSearch + '</b></span>');
+             }
+            }
+        return body;
+     }
+
+     function getAllSearch(searchterms){
+         var splitSearch = searchterms.split('&&');
+         for(var i = 0; i < splitSearch.length; i++){
+            splitSearch[i] = splitSearch[i].trim();
+         }
+         return splitSearch;
+     }
+
+     function doesContainSearchTerms(body, searchtermsArray){
+         for(var i = 0; i < searchtermsArray.length; i++){
+            if (!(contains(body.toLowerCase(), searchtermsArray[i].toLowerCase()))) {
+                return false;
+            }
+        }
+        return true;
+       }
 
      //No matches
      function addNoMatchMessege(searchterms, username, subreddit) {
