@@ -367,13 +367,11 @@
      //Preparing download
 
      function addJsonObject(permalink, body, subreddit, author, created_utc){
-        var utcIsoDate = new Date(created_utc).toISOString();
         var date = new Date(created_utc * 1000);
         var obj = { "author" : author, "created_utc" : date, "subreddit" : subreddit, "permalink" : permalink, "body" : body };          
         commentObj.comments[commentObj.comments.length] = obj;
 
      }
-
 
      function setDownloadHref(subreddit, username, searchterms){
         commentObj.date_fetched = getDateTime();
