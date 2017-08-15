@@ -1,5 +1,5 @@
      var currentRequest = null;
-     var someObj =   { "objects" : []};      
+     var commentObj =   {"date_fetched":"YYYY-M-DD H:MM:SS", "comments" : []};      
 
      //When the user starts typing in..
      $(document).keyup(function(e) {
@@ -306,27 +306,6 @@
 
      }
 
-
-     function addJsonObject(permalink, body, subreddit, author){
-        var obj = { "author" : author, "subreddit" : subreddit, "permalink" : permalink, "body" : body, };          
-        someObj.objects[someObj.objects.length] = obj;
-
-     }
-
-
-     function setDownloadHref(subreddit, username, searchterms){
-        var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(someObj));
-        var download_name = "reddit-search";
-        if(subreddit) {download_name += "_SUB_" + subreddit}; 
-        if(username) {download_name += "_USER_" + username}; 
-        if(searchterms ) {download_name += "_SEARCH_" + searchterms}; 
-        download_name += ".json";
-
-        $('#download_json_btn').attr('href', download_data);
-        $('#download_json_btn').attr('download', download_name);
-     }
-
-
      //Show comment on page if it's a match
      function showComment(comments, searchterms, username, subreddit, nextAfter) {
 
@@ -381,4 +360,35 @@
              "<li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li></ul></div>";
 
          $('.search_results_section').append(noMatchMsg);
+     }
+
+
+
+     //Preparing download
+
+     function addJsonObject(permalink, body, subreddit, author){
+        var obj = { "author" : author, "subreddit" : subreddit, "permalink" : permalink, "body" : body, };          
+        commentObj.comments[commentObj.comments.length] = obj;
+
+     }
+
+
+     function setDownloadHref(subreddit, username, searchterms){
+        commentObj.date_fetched = getDateTime();
+        var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(commentObj));
+        var download_name = "reddit-search";
+        if(subreddit) {download_name += "_SUB_" + subreddit}; 
+        if(username) {download_name += "_USER_" + username}; 
+        if(searchterms ) {download_name += "_SEARCH_" + searchterms}; 
+        download_name += ".json";
+
+        $('#download_json_btn').attr('href', download_data);
+        $('#download_json_btn').attr('download', download_name);
+     }
+
+     function getDateTime(){
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return date+' '+time;
      }
