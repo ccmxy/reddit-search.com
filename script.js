@@ -1,4 +1,5 @@
      var currentRequest = null;
+     var commentObj =   {"date_fetched":"YYYY-M-DD H:MM:SS", "comments" : []};      
 
      //When the user starts typing in..
      $(document).keyup(function(e) {
@@ -64,6 +65,7 @@
      $('.after_search_container span').click(function() {
          $('.hidden_page_number_list').html("");
          $('.search_results_section').html("");
+         $('#download_json_btn').addClass('hidden');
          $('#my_bootstrap_pager').addClass('hidden');
          $('#current_page').html("Page 0");
          $('#current_length').html("0");
@@ -278,6 +280,10 @@
                          } else {
                              nextAfter = -1;
                              $("#query_status_msg").html("<b> Query complete.</b>");
+                             $("#download_json_btn").removeClass('hidden');
+                            setDownloadHref(subreddit, username, searchterms);
+
+
 
                          }
                          showComment(comments, searchterms, username, subreddit, nextAfter);
@@ -321,8 +327,10 @@
                      body = body.replaceAll(searchterms, '<span class=highlight><b>' + searchterms + '</b></span>');
                  }
                  var page_number = Math.ceil((match_ct / 15));
-                 $('.search_results_section').append("<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>");
 
+                 var result = "<span class='page page_" + page_number + "'><div class='short_url'>" + "<a href='" + permalink + "' target='_blank' class='url'>" + permalink + "</a>" + "</div>" + "<div class='comment_body'>" + body + "</div><hr></span>";
+                 $('.search_results_section').append(result);
+                 addJsonObject(permalink, body, comment_subreddit, comments[j].data.author, comments[j].data.created_utc);
                  addPageNumber(page_number);
              }
 
@@ -352,4 +360,34 @@
              "<li>Example 1: <b>search=I have:: user=spez:: subreddit=ModSupport::</b></li><li>Example 2: <b>subreddit=all:: search=i wonder:: </b></li></ul></div>";
 
          $('.search_results_section').append(noMatchMsg);
+     }
+
+
+
+     //Preparing download
+     function addJsonObject(permalink, body, subreddit, author, created_utc){
+        var date = new Date(created_utc * 1000);
+        var obj = { "author" : author, "created_utc" : date, "subreddit" : subreddit, "permalink" : permalink, "body" : body };          
+        commentObj.comments[commentObj.comments.length] = obj;
+
+     }
+
+     function setDownloadHref(subreddit, username, searchterms){
+        commentObj.date_fetched = getDateTime();
+        var download_data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(commentObj));
+        var download_name = "reddit-search";
+        if(subreddit) {download_name += "_SUB_" + subreddit}; 
+        if(username) {download_name += "_USER_" + username}; 
+        if(searchterms ) {download_name += "_SEARCH_" + searchterms}; 
+        download_name += ".json";
+
+        $('#download_json_btn').attr('href', download_data);
+        $('#download_json_btn').attr('download', download_name);
+     }
+
+     function getDateTime(){
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return date+' '+time;
      }
