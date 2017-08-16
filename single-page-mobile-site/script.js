@@ -4,6 +4,12 @@
          "comments": []
      }; //Object to hold json download data
 
+
+    $( document ).ready(function() {
+        if (screen.width <= 750) {
+        window.location = "http://m.reddit-search.com/";
+    }
+
      //When the user starts typing in..
      $(document).keyup(function(e) {
          if ($('#search_mobile').is(":focus") || $('#subreddit_mobile').is(":focus") || $('#user_mobile').is(":focus")) {
