@@ -1,0 +1,84 @@
+<head>
+   <title>Reddit Search Engine</title>
+   <meta charset="UTF-8">
+   <meta name="author" content="Colleen Minor">
+   <meta name="viewport" content="width=device-width initial-scale=1">
+   <link href='https://fonts.googleapis.com/css?family=Expletus+Sans:700' rel='stylesheet' type='text/css'>
+   <link href='style.css' rel='stylesheet' type='text/css'>
+   <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+   <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Oswald" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed" rel="stylesheet">
+</head>
+<body>
+   <div class="hidden" id="searched_results_display">
+      <header>
+         <nav class="shelf">
+            <a href="http://Reddit-Search.com" class="logo">
+               <h3>     
+                  <span>Reddit-Search.com</span>
+               </h3>
+            </a>
+            <div class="after_search_container">
+               <p class='mobile_instructions'>Start typing in any box below for instant comment pull. </p>
+               <input type="text" id="after_search"/ >
+               <input type="text" id="user_mobile" class="mobile" placeholder="username"/ >
+               <input type="text" id="search_mobile" class="mobile" placeholder="search phrase"/ >
+               <input type="text" id="subreddit_mobile" class="mobile" placeholder="subreddit"/ >
+               <span class='gliph'><i class="glyphicon glyphicon-search"></i></span>
+            </div>
+         </nav>
+      </header>
+      <section id='checkbox_section'>
+         <div class="btn-group" data-toggle="buttons-checkbox">
+           <label id='checkbox-label' class="btn btn-primary"> 
+            <input type='checkbox' autocomplete="off" id='single_page_checkbox' name='single_page_checkbox'> Single page
+            </label>
+         </div>
+         <a id='download_json_btn' type='text/json' charset='utf-8' class="btn btn-success hidden" role="button">Download JSON</a>
+     </section>
+
+    <section class="hidden"><ul class="hidden_page_number_list" > </ul></section>
+
+<section id="my_bootstrap_pager">
+  <p style='text-align: center'><span id='current_page'>Page 1</span> / <span class='current_length'></span></p>
+    <ul class="pager">
+  <li class="previous disabled" id="prev" onclick="prevPage()"><a href="#">&larr; Newer</a></li>
+  <li class="next" id="next" onclick="nextPage()"><a href="#">Older &rarr;</a></li>
+  
+</ul>
+</section>
+
+      <section class="search_results_section">
+      </section>
+   
+   </div>
+   <!--Main page-->
+   <!--Main body will be wrapped in this section-->
+   <div class="wrapper">
+      <div class="search_body">
+         <h1 title='All three search boxes can be used alone or in combo with the other two. \n\nHover over search boxes for usage details.'>
+            <span>R</span>
+            <span>e</span>
+            <span>d</span>
+            <span>d</span>
+            <span>i</span>
+            <span>t</span>
+            <span>-</span><span>S</span><span>e</span><span>a</span><span>r</span><span>c</span><span>h</span><span>.</span><span>c</span><span>o</span><span>m</span>      
+         </h1>
+         <div><input type="text" placeholder="Search Reddit user comments..." id="user" autofocus title="Option to only pull comments from specific user. Will grab user\'s most recent 1000 comments."></div>
+         <br>
+         <div><input type="text" placeholder="Search for word or phrase in comments..." id="search_terms" title="Options to only pull comments containing certain word or phrase. If this is the only box specified it will search from most recent 1000 comments in r/all."></div>
+         <br>
+         <div><input type="text" placeholder="Search subreddit comments..." id="subreddit" title="Option to only pull comments from this subreddit. If this is specified and user is not it will pull the most recent 1000 comments from that subreddit."></div>
+         <div class="search_buttons">
+            <a href="#" class="btn btn-primary" id="search" autofocus>Search</a>
+         </div>
+         <a href="https://github.com/ccmxy/reddit-search.com" id="about" target="_blank">About</a>
+      </div>
+   </div>
+   <!--/Main page-->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src='script.js'></script>
+</body>
+</html>
